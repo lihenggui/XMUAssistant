@@ -5,46 +5,43 @@
     android:orientation="vertical">
 
 
-
-
     <EditText
-       android:layout_width="fill_parent"
-       android:layout_height="40dp"
-        android:background="@drawable/bg_edittext"
-             android:padding="4dp"
-        android:layout_marginTop="180dp"
-         android:layout_marginLeft="48dp"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-         android:textColorHint="#AAAAAA"
-         android:textSize="15sp"
-         android:singleLine="true"
-         android:hint="Student ID"/>
+        android:layout_marginTop="180dp"
+        android:background="@drawable/bg_edittext"
+        android:hint="Student ID"
+        android:padding="4dp"
+        android:singleLine="true"
+        android:textColorHint="#AAAAAA"
+        android:textSize="15sp" />
 
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:background="@drawable/bg_edittext"
-        android:padding="4dip"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:textColorHint="#AAAAAA"
-        android:textSize="15sp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_edittext"
+        android:hint="Password"
+        android:padding="4dip"
         android:singleLine="true"
-        android:hint="Password"/>
-
+        android:textColorHint="#AAAAAA"
+        android:textSize="15sp" />
 
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
         android:layout_marginTop="48dp"
         android:background="#5c6bc0"
-        android:textColor="#FFFFFF"
-        android:layout_marginRight="48dp"
-        android:layout_marginLeft="48dp"
         android:text="Sign In"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
