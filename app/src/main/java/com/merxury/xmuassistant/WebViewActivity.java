@@ -1,20 +1,17 @@
 package com.merxury.xmuassistant;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import org.apache.http.cookie.CookieRestrictionViolationException;
 
 import java.util.List;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 
 public class WebViewActivity extends AppCompatActivity {
     private WebView webView;
@@ -25,10 +22,10 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
         webView = (WebView) findViewById(R.id.webView1);
         /*
-        同步Cookies
+        将前一步获取到的cookie传入webView,实现免登录即可获取到页面
          */
         String strUrl = "http://i.xmu.edu.cn";
-        /*
+
         CookieJar cookieJar = LoginActivity.client.cookieJar();
         HttpUrl url = HttpUrl.parse(strUrl);
         List<Cookie> cookies = cookieJar.loadForRequest(url);
@@ -40,7 +37,7 @@ public class WebViewActivity extends AppCompatActivity {
         String strCookies = sb.toString();
         android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();
         cookieManager.setCookie(strUrl, strCookies);
-        */
+
         webView.loadUrl(strUrl);
         webView.setWebViewClient(new WebViewClient() {
             @Override

@@ -1,29 +1,17 @@
 package com.merxury.xmuassistant;
 
-import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookiePolicy;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -32,24 +20,28 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.merxury.xmuassistant.R;
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.FormBody;
 
 
 /**
@@ -63,26 +55,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"};
-    /*
-    OkHttp 3.0开始，默认不保存Cookie，要自己使用CookieJar来保存Cookie。
-    使用Builder来构建OkHttpClient才能设置CookieJar
-    */
+    //client是用来请求页面的okhttp对象
     public static OkHttpClient client = new OkHttpClient.Builder()
-            .cookieJar(new CookieJar() {
-                private final HashMap<String, List<okhttp3.Cookie>> cookieStore = new HashMap<>();
-
-                @Override
-                public void saveFromResponse(HttpUrl url, List<okhttp3.Cookie> cookies) {
-                    cookieStore.put(url.host(), cookies);
-                }
-
-                @Override
-                public List<okhttp3.Cookie> loadForRequest(HttpUrl url) {
-                    List<okhttp3.Cookie> cookies = cookieStore.get(url.host());
-                    return cookies != null ? cookies : new ArrayList<okhttp3.Cookie>();
-                }
-            })
             .build();
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -98,6 +74,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        /*
+        我不是很清楚下面三行代码的最佳位置放在哪里比较好
+        反正能用就好了
+        就先凑活吧
+         */
+        /*
+        持久化保存cookies~一次登陆即有效~
+         */
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
+        OkHttpClient client1 = new OkHttpClient.Builder()
+                .cookieJar(cookieJar)
+                .build();
+        client = client1;
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         // Set up the login form.
@@ -312,13 +302,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             try {
                 // Simulate network access.
                 Thread.sleep(2);
-                String res = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login?goto=http%3A%2F%2Fi.xmu.edu.cn&inputCode=&gx_charset=UTF-8", mEmail, mPassword);
+                String res = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", mEmail, mPassword);
                 System.out.println(res);
                 Log.d("LoginActivity", res);
                 Request request = new Request.Builder()
                         .url("http://i.xmu.edu.cn")
+                        .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2700.0 Safari/537.36")
                         .build();
-                System.out.println("Test");
                 Response response = client.newCall(request).execute();
                 System.out.println(response.body().string());
             } catch (InterruptedException e) {
@@ -360,6 +350,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
 
         public String sendPost(String url, String username, String password) throws IOException {
+
             //将登录的参数添加到HashMap中
             HashMap<String, String> params = new HashMap<>();
             params.put("IDToken0", "");
