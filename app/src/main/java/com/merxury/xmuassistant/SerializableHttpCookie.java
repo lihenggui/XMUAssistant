@@ -15,6 +15,28 @@ import java.net.HttpCookie;
  * Created by lihen on 2016/5/4.
  * 将cookie保持在SharedPreferences中
  */
+/*
+ * Copyright (c) 2011 James Smith <james@loopj.com>
+ * Copyright (c) 2015 Fran Montiel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Based on the code from this stackoverflow answer http://stackoverflow.com/a/25462286/980387 by janoliver
+ * Modifications in the structure of the class and addition of serialization of httpOnly attribute
+ */
+
 public class SerializableHttpCookie implements Serializable {
     private static final String TAG = SerializableHttpCookie.class
             .getSimpleName();

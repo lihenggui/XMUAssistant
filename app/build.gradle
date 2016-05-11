@@ -26,7 +26,8 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:design:23.3.0'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1'
     compile 'com.github.franmontiel:PersistentCookieJar:v0.9.3'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 }
