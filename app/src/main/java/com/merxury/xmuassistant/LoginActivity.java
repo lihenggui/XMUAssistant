@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ParseException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,7 +17,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +31,10 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +63,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     //client是用来请求页面的okhttp对象
     public static OkHttpClient client = new OkHttpClient.Builder()
             .build();
-
+    //记录学生卡名字or余额信息
+    public String studentName;
+    public String cardMoney;
+    public String money;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -289,10 +297,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         private final String mEmail;
         private final String mPassword;
+        //保存密码到配置文件中
+        private SharedPreferences.Editor editor;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            //保存用户名密码到配置文件中
+            editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+            editor.putString("account", email);
+            editor.putString("password", password);
+            editor.apply();
         }
 
         @Override
@@ -300,21 +315,36 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-                Thread.sleep(2);
-                String res = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", mEmail, mPassword);
-                System.out.println(res);
-                Log.d("LoginActivity", res);
-                Request request = new Request.Builder()
-                        .url("http://i.xmu.edu.cn")
-                        .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2700.0 Safari/537.36")
-                        .build();
-                Response response = client.newCall(request).execute();
-                System.out.println(response.body().string());
-            } catch (InterruptedException e) {
-                return false;
+                //发送网络请求
+                String ixmures = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", mEmail, mPassword);
+                //传cookie，暴力传参
+                MainActivity.client = client;
+                //使用jsoup解析页面，将html转换成Document实例
+                //获取到网页全部代码
+                Document ixmudoc = Jsoup.parse(ixmures);
+                //获得一系列的子标签,这里的pf1041特指学生卡信息的部分
+                Elements elementsDiv = ixmudoc.getElementsByAttributeValue("id", "pf1041");
+                //余额使用font属性来高亮，所以选择font属性就可以抓取到余额信息
+                //余额信息在最后一个元素里，使用.last输出
+                Elements moneyLeft = elementsDiv.select("font");
+                //保存到money变量中
+                money = moneyLeft.last().text();
+                //暴力传参，应该要改，先这样吧
+                MainActivity.money = money;
+                //选择姓名所在的区域
+                Elements nameElems = ixmudoc.select("#pf1037 > div > div.portletContent > table > tbody > tr > td:nth-child(2) > div > ul > li:nth-child(1)");
+                String tempName = nameElems.text();
+                //删除末尾，留下有用的信息，暴力传参
+                MainActivity.studentName = tempName.substring(0, tempName.length() - 5);
+                //查询电费
+                ElecQuery queryRoom = new ElecQuery("09", "8号楼", "0436");
+                System.out.println(queryRoom.getElec());
+
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("扫描失败");
             }
 
             for (String credential : DUMMY_CREDENTIALS) {
@@ -381,6 +411,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 throw new IOException("Unexpected code:" + response);
             }
         }
+
     }
 
 
