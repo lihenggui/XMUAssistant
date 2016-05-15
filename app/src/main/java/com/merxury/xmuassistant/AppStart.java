@@ -1,6 +1,9 @@
 package com.merxury.xmuassistant;
 
-import android.app.Activity;
+/**
+ * Created by lihen on 2016/5/11.
+ */
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -34,19 +37,20 @@ public class AppStart extends AppCompatActivity {
         setContentView(view);
 
         //渐变展示启动屏
-        AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
+        AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
         aa.setDuration(2000);
         view.startAnimation(aa);
-        aa.setAnimationListener(new Animation.AnimationListener()
-        {
+        aa.setAnimationListener(new Animation.AnimationListener() {
 
             public void onAnimationEnd(Animation arg0) {
                 redirectTo();
             }
 
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
 
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
         });
 
@@ -56,7 +60,7 @@ public class AppStart extends AppCompatActivity {
     /**
      * 跳转到...
      */
-    private void redirectTo(){
+    private void redirectTo() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
