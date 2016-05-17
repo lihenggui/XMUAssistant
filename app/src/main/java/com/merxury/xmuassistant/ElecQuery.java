@@ -61,6 +61,12 @@ public class ElecQuery {
     }
 
     public void setRoomID(String roomID) {
+        //支持三位宿舍号的输入
+        //网页要求输入的宿舍号是四位数，对于三位数的宿舍号前方要加一个0才能查询
+        //ROOMID一定要为四位数
+        if (roomID.length() == 3) {
+            roomID = "0" + roomID;
+        }
         this.roomID = roomID;
     }
 
@@ -68,7 +74,9 @@ public class ElecQuery {
         return lou;
     }
 
+    //楼号，传入数字即可，会自动添加字符串
     public void setlou(String lou) {
+        lou = lou + "号楼";
         this.lou = lou;
     }
 
