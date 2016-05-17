@@ -21,4 +21,12 @@
 
     <string name="action_settings">Settings</string>
     <string name="search_hint">想要搜索的书籍名</string>
+    <string-array name="xiaoqu">
+        <item>c语言</item>
+        <item>java </item>
+        <item>php</item>
+        <item>xml</item>
+        <item>html</item>
+    </string-array>
+
 </resources>
