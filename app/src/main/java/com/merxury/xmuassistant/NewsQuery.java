@@ -16,7 +16,7 @@ import java.util.HashMap;
  * ！！！！方法未测试！！！！需要检验！！！
  * 要使用getNewsInfo()方法来获取数据
  */
-public class NewsActivity {
+public class NewsQuery {
     /**
      * 获取网页上的文章标题
      * url为传入的网页地址
