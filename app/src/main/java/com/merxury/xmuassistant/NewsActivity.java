@@ -18,20 +18,20 @@ public class NewsActivity {
      * 返回文章标题字符串
      */
     public static String Title(String url) {
-        String linkTitle = "";
+        String title = "";
         try {
             Document doc = Jsoup.connect(url).timeout(60000).get();
             Elements ListDiv = doc.getElementsByAttributeValue("class", "postTitle");
             for (Element element : ListDiv) {
                 Elements links = element.getElementsByTag("a");
                 for (Element link : links) {
-                    linkTitle = link.toString();//获取URL标题
+                    title = link.toString();//获取URL标题
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return linkTitle;
+        return title;
     }
 
     /**
