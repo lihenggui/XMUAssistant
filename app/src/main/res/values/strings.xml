@@ -21,12 +21,188 @@
 
     <string name="action_settings">Settings</string>
     <string name="search_hint">想要搜索的书籍名</string>
+    <!-- Strings related to 输入宿舍号温馨提示 -->
+    <string name="wenxitishi">温馨提示：选择好宿舍楼群，宿舍楼号后，需要再输入2位楼号和4位房间号。\n如住在海韵学生公寓海韵9-101的同学，需要选择海韵学生公寓，海韵9,
+        在楼号一栏中输入09，在房间号一栏中输入0101</string>
+    <!-- Strings related to 宿舍区 -->
     <string-array name="xiaoqu">
-        <item>c语言</item>
-        <item>java </item>
-        <item>php</item>
-        <item>xml</item>
-        <item>html</item>
+        <item>本部芙蓉区</item>
+        <item>本部石井区 </item>
+        <item>本部南光区</item>
+        <item>本部凌云区</item>
+        <item>本部勤业区</item>
+        <item>本部海滨新区</item>
+        <item>本部丰庭区</item>
+        <item>海韵学生公寓</item>
+        <item>曾厝安学生公寓</item>
+        <item>翔安芙蓉区</item>
+        <item>翔安南安区</item>
+        <item>翔安南光区</item>
+        <item>翔安国光区</item>
+        <item>翔安丰庭区</item>
+        <item>翔安笃行区</item>
     </string-array>
-
+    <!-- Strings related to 本部芙蓉区 -->
+    <string-array name="Bfurong">
+        <item>芙蓉1</item>
+        <item>芙蓉2</item>
+        <item>芙蓉3</item>
+        <item>芙蓉4</item>
+        <item>芙蓉5</item>
+        <item>芙蓉6</item>
+        <item>芙蓉7</item>
+        <item>芙蓉8</item>
+        <item>芙蓉9</item>
+        <item>芙蓉10</item>
+        <item>芙蓉11</item>
+        <item>芙蓉12</item>
+        <item>芙蓉13</item>
+    </string-array>
+    <!-- Strings related to 本部石井区 -->
+    <string-array name="Bshijing">
+        <item>石井1</item>
+        <item>石井2</item>
+        <item>石井3</item>
+        <item>石井4</item>
+        <item>石井5</item>
+        <item>石井6</item>
+        <item>石井7</item>
+    </string-array>
+    <!-- Strings related to 本部南光区 -->
+    <string-array name="Bnanguang">
+        <item>南光7</item>
+        <item>南光4</item>
+        <item>综合楼</item>
+    </string-array>
+    <!-- Strings related to 本部凌云区 -->
+    <string-array name="Blingyun">
+        <item>凌云1</item>
+        <item>凌云2</item>
+        <item>凌云3</item>
+        <item>凌云4</item>
+        <item>凌云5</item>
+        <item>凌云6</item>
+        <item>凌云7</item>
+        <item>凌云8</item>
+        <item>凌云9</item>
+        <item>凌云10</item>
+    </string-array>
+    <!-- Strings related to 本部勤业区 -->
+    <string-array name="Bqinye">
+        <item>勤业6</item>
+        <item>勤业7</item>
+    </string-array>
+    <!-- Strings related to 本部海滨新区 -->
+    <string-array name="Bhaibin">
+        <item>新区一</item>
+        <item>新区二</item>
+        <item>新区三</item>
+    </string-array>
+    <!-- Strings related to 本部丰庭区 -->
+    <string-array name="Bfengting">
+        <item>丰庭1</item>
+        <item>丰庭2</item>
+        <item>丰庭3</item>
+        <item>丰庭4</item>
+        <item>丰庭5</item>
+        <item>笃行3</item>
+    </string-array>
+    <!-- Strings related to 海韵学生公寓 -->
+    <string-array name="haiyun">
+        <item>海韵09</item>
+        <item>海韵10</item>
+        <item>海韵11</item>
+        <item>海韵12</item>
+        <item>海韵13</item>
+        <item>海韵14</item>
+        <item>海韵15</item>
+        <item>海韵16</item>
+        <item>海韵17</item>
+        <item>海韵18</item>
+    </string-array>
+    <!-- Strings related to 曾厝垵学生公寓 -->
+    <string-array name="zengcuoan">
+        <item>1号楼</item>
+        <item>2号楼</item>
+        <item>3号楼</item>
+        <item>4号楼</item>
+        <item>5号楼</item>
+        <item>6号楼</item>
+        <item>7号楼</item>
+        <item>8号楼</item>
+    </string-array>
+    <!-- Strings related to 翔安校区芙蓉区 -->
+    <string-array name="Xfurong">
+        <item>翔安芙蓉1</item>
+        <item>翔安芙蓉2</item>
+        <item>翔安芙蓉3</item>
+        <item>翔安芙蓉4</item>
+        <item>翔安芙蓉5</item>
+        <item>翔安芙蓉6</item>
+        <item>翔安芙蓉7</item>
+        <item>翔安芙蓉8</item>
+        <item>翔安芙蓉9</item>
+        <item>翔安芙蓉10</item>
+    </string-array>
+    <!-- Strings related to 翔安校区南安区 -->
+    <string-array name="Xnanan">
+        <item>翔安南安1</item>
+        <item>翔安南安2</item>
+        <item>翔安南安3</item>
+        <item>翔安南安4</item>
+        <item>翔安南安5</item>
+        <item>翔安南安6</item>
+        <item>翔安南安7</item>
+        <item>翔安南安8</item>
+        <item>翔安南安9</item>
+        <item>翔安南安10</item>
+        <item>翔安南安11</item>
+        <item>翔安南安12</item>
+        <item>翔安南安13</item>
+    </string-array>
+    <!-- Strings related to 翔安校区南光区 -->
+    <string-array name="Xnanguang">
+        <item>翔安南光1</item>
+        <item>翔安南光2</item>
+        <item>翔安南光3</item>
+        <item>翔安南光4</item>
+        <item>翔安南光5</item>
+        <item>翔安南光6</item>
+        <item>翔安南光7</item>
+        <item>翔安南光8</item>
+    </string-array>
+    <!-- Strings related to 翔安校区国光区 -->
+    <string-array name="Xguoguang">
+        <item>翔安国光1</item>
+        <item>翔安国光2</item>
+        <item>翔安国光3</item>
+        <item>翔安国光4</item>
+        <item>翔安国光5</item>
+        <item>翔安国光6</item>
+        <item>翔安国光7</item>
+        <item>翔安国光8</item>
+        <item>翔安国光9</item>
+        <item>翔安国光10</item>
+        <item>翔安国光11</item>
+    </string-array>
+    <!-- Strings related to 翔安校区丰庭区 -->
+    <string-array name="Xfengting">
+        <item>翔安丰庭1</item>
+        <item>翔安丰庭2</item>
+        <item>翔安丰庭3</item>
+        <item>翔安丰庭4</item>
+    </string-array>
+    <!-- Strings related to 翔安校区笃行区 -->
+    <string-array name="Xduxing">
+        <item>翔安笃行1</item>
+        <item>翔安笃行2</item>
+        <item>翔安笃行3</item>
+        <item>翔安笃行4</item>
+        <item>翔安笃行5</item>
+        <item>翔安笃行6</item>
+        <item>翔安笃行7</item>
+        <item>翔安笃行8</item>
+        <item>翔安笃行9</item>
+        <item>翔安笃行10</item>
+    </string-array>
 </resources>
