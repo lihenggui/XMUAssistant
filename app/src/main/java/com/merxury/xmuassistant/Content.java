@@ -30,7 +30,6 @@ import com.merxury.xmuassistant.R;
 
 public class Content extends Activity implements ObservableScrollView.ScrollViewListener {
 
-
     private ObservableScrollView scrollView1 = null;
     private ObservableScrollView scrollView2 = null;
 

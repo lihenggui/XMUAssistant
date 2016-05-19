@@ -182,6 +182,7 @@
     </com.merxury.xmuassistant.ObservableScrollView>
 
 
+
     <TextView
         android:id="@+id/textContent"
         android:layout_width="match_parent"

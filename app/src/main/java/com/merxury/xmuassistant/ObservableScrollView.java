@@ -36,7 +36,6 @@ public class ObservableScrollView extends ScrollView {
 
     }
 
-
     public void setScrollViewListener(ScrollViewListener scrollViewListener) {
         this.scrollViewListener = scrollViewListener;
 

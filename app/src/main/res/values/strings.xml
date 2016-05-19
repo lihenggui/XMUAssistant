@@ -206,4 +206,19 @@
         <item>翔安笃行9</item>
         <item>翔安笃行10</item>
     </string-array>
+    <!-- 分数查询年份选择-->
+    <string-array name="year">
+        <item>2010-2011</item>
+        <item>2011-2012</item>
+        <item>2012-2013</item>
+        <item>2013-2014</item>
+        <item>2014-2015</item>
+        <item>2015-2016</item>
+    </string-array>
+    <!-- 分数查询学期选择-->
+    <string-array name="term">
+        <item>第一学期</item>
+        <item>第二学期</item>
+        <item>第三学期</item>
+    </string-array>
 </resources>
