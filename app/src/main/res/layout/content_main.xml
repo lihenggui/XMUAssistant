@@ -5,9 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_edittext"
+        android:imeOptions="actionSearch" />
 
     <com.merxury.xmuassistant.ObservableScrollView
         android:id="@+id/scrollView"
+        android:layout_marginTop="116dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,15 +27,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <SearchView
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="64dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_edittext"
-                android:imeOptions="actionSearch" />
+
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -182,11 +184,10 @@
     </com.merxury.xmuassistant.ObservableScrollView>
 
 
-
     <TextView
         android:id="@+id/textContent"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="52dp"
         android:layout_marginTop="64dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -198,7 +199,7 @@
         android:layout_width="40dp"
         android:layout_height="2dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="76dp"
         android:background="#2196f3" />
 
 </RelativeLayout>

@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Content">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,23 +27,16 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
 
-        <activity android:name=".AppStart">
-        </activity>
-
-
-
+        <activity android:name=".AppStart"></activity>
 
 
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".WebViewActivity" />
-        <activity android:name=".QuickRoadActivity"/>
-        <activity android:name=".SettingsActivity" />
     </application>
 
 </manifest>

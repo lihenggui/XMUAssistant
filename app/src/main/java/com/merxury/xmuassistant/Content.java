@@ -37,7 +37,6 @@ public class Content extends Activity implements ObservableScrollView.ScrollView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-
         scrollView1 = (ObservableScrollView) findViewById(R.id.scrollView);
         scrollView1.setScrollViewListener(this);
 
