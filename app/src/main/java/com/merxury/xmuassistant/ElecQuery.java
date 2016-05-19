@@ -35,6 +35,7 @@ public class ElecQuery {
         this.roomID = roomID;
     }
 
+
     //getters and setters 写入&读取各种信息
     public String getMoney() {
         if (moneyLeft.isEmpty()) {

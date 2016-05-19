@@ -22,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText room = (EditText) findViewById(R.id.room);
     private EditText louID = (EditText) findViewById(R.id.louid);
     private String ID = "";  //存放小区ID
+    private String louid = "";   //获取楼号
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 // TODO Auto-generated method stub
 
-                String LouValue = (String) Lou.getItemAtPosition(arg2);
+                louid = (String) Lou.getItemAtPosition(arg2);
+
 
             }
 
@@ -202,7 +204,7 @@ public class SettingsActivity extends AppCompatActivity {
             // 将adapter 添加到spinner中
             Lou.setAdapter(lou_adapter);
         }
-        String louid = louID.getText().toString();   //获取楼号
+
         String roomid = room.getText().toString();   //获取房间号
         editor = getSharedPreferences("data", MODE_PRIVATE).edit();
         editor.putString("xiaoqu", ID);           //小区ID写入data文件
