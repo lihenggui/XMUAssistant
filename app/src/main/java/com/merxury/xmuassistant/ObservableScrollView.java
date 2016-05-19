@@ -1,7 +1,7 @@
 package com.merxury.xmuassistant;
 
 /**
- * Created by dhd on 2016/5/18.
+ * Created by dhd on 2016/5/18
  */
 import android.content.Context;
 import android.util.AttributeSet;

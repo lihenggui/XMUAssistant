@@ -52,14 +52,14 @@ public class Content extends Activity implements ObservableScrollView.ScrollView
         System.out.println(scrollView.getScrollY());
         if(0<=scrollView.getScrollY()&&scrollView.getScrollY()<=1884){
             textView2.setBackgroundColor(0xff2196f3);
-            textView1.setText("Course");
+            textView1.setText("Course");//第一个小提示
         }
         else if(1884<=scrollView.getScrollY()&&scrollView.getScrollY()<=3791){
             textView2.setBackgroundColor(0xffFF8f00);
-            textView1.setText("News to read");
+            textView1.setText("News to read");//第二个小提示
         }else if(scrollView.getScrollY()>=3791){
             textView2.setBackgroundColor(0xff009688);
-            textView1.setText("Notice");
+            textView1.setText("Notice");//第三个小提示
         }
 
     }
