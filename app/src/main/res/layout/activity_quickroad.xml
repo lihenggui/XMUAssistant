@@ -32,10 +32,10 @@
                 android:layout_height="64dp"
                 android:layout_weight="7"
                 android:background="@android:color/white"
+                android:onClick="xuegong"
                 android:text="学工系统"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:onClick="xuegong"/>
+                android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -57,10 +57,10 @@
                 android:layout_height="64dp"
                 android:layout_weight="7"
                 android:background="@android:color/white"
+                android:onClick="jiaowu"
                 android:text="教务系统"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:onClick="jiaowu"/>
+                android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,17 +75,17 @@
                 android:layout_height="64dp"
                 android:layout_weight="2"
                 android:scaleType="centerCrop"
-                android:src="@drawable/graduate" />
+                android:src="@drawable/yanjiusheng" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="64dp"
                 android:layout_weight="7"
                 android:background="@android:color/white"
+                android:onClick="yanjiusheng"
                 android:text="研究生系统"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:onClick="yanjiusheng"/>
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,10 +106,10 @@
                 android:layout_height="64dp"
                 android:layout_weight="7"
                 android:background="@android:color/white"
+                android:onClick="lecture"
                 android:text="讲座信息"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:onClick="lecture"/>
+                android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -131,10 +131,10 @@
                 android:layout_height="64dp"
                 android:layout_weight="7"
                 android:background="@android:color/white"
+                android:onClick="library"
                 android:text="图书馆"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:onClick="library"/>
+                android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -148,17 +148,17 @@
                 android:layout_height="64dp"
                 android:layout_weight="2"
                 android:scaleType="centerCrop"
-                android:src="@drawable/affair" />
+                android:src="@drawable/dating" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="64dp"
                 android:layout_weight="7"
                 android:background="@android:color/white"
+                android:onClick="affair"
                 android:text="学生事务大厅"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:onClick="affair"/>
+                android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
