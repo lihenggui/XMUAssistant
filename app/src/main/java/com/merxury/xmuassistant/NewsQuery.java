@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -22,7 +23,7 @@ public class NewsQuery {
      * 返回文章标题字符串
      */
 
-    public static String url = "http://jwc.xmu.edu.cn"; //连接需要抓取网站的URL
+    public static String url = "http://jwc.xmu.edu.cn/"; //连接需要抓取网站的URL
     private static HashMap<String, String> newsInfo = new HashMap<>();
 
     public static HashMap<String, String> getNewsInfo() {
@@ -42,7 +43,7 @@ public class NewsQuery {
             //根据指定的cssQuery语句抓取网页内元素，这里抓取的是除了置顶以外的第一条新闻
             Elements ListDiv = doc.select("#wp_news_w13 > table > tbody > tr:nth-child(3) > td:nth-child(2) > table > tbody > tr > td:nth-child(1) > a");
             //抓取子页面的URL，然后打开
-            String newsURL = url + ListDiv.attr("herf");
+            String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("herf");
             //获得页面的标题
             String newsTitle = ListDiv.text();
             newsInfo.put("URL", newsURL);
