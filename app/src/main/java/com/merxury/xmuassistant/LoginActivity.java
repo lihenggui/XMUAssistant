@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -90,6 +91,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         /*
         持久化保存cookies~一次登陆即有效~
          */
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         ClearableCookieJar cookieJar =
                 new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
         OkHttpClient client1 = new OkHttpClient.Builder()

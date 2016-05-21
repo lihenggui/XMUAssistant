@@ -22,7 +22,7 @@ public class NewsQuery {
      * 返回文章标题字符串
      */
 
-    private static String url = "http://jwc.xmu.edu.cn"; //连接需要抓取网站的URL
+    public static String url = "http://jwc.xmu.edu.cn"; //连接需要抓取网站的URL
     private static HashMap<String, String> newsInfo = new HashMap<>();
 
     public static HashMap<String, String> getNewsInfo() {
