@@ -43,7 +43,7 @@ public class NewsQuery {
             //根据指定的cssQuery语句抓取网页内元素，这里抓取的是除了置顶以外的第一条新闻
             Elements ListDiv = doc.select("#wp_news_w13 > table > tbody > tr:nth-child(3) > td:nth-child(2) > table > tbody > tr > td:nth-child(1) > a");
             //抓取子页面的URL，然后打开，要删除最后一个斜杠，否则会出错
-            String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("herf");
+            String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("href").trim().toString();
             //获得页面的标题
             String newsTitle = ListDiv.text();
             newsInfo.put("URL", newsURL);
@@ -65,9 +65,11 @@ public class NewsQuery {
         String text = "";
         try {
             //从HashMap中调取需要读取的页面URL
-            doc = Jsoup.connect(newsInfo.get("url")).get();
+            doc = Jsoup.connect(newsInfo.get("URL")).get();
             //选择整个页面的新闻部分，抓取所有内容
             Elements ListDiv = doc.select("#newsinfo > div > div > div > div");
+            String temp = ListDiv.text();
+            System.out.print(temp);
             for (Element element : ListDiv) {
                 //新闻中的文字都有标题
                 Elements textInfos = element.getElementsByAttribute("span");
