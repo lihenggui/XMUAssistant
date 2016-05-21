@@ -11,8 +11,8 @@
     <LinearLayout
         android:id="@+id/activity_main_drawer"
         android:layout_width="match_parent"
-        android:background="@drawable/side_nav_bar"
         android:layout_height="match_parent"
+        android:background="@drawable/side_nav_bar"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -23,8 +23,8 @@
             android:id="@+id/nav_library"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:clickable="true">
+            android:clickable="true"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -34,18 +34,18 @@
 
 
             <TextView
-                android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text=" 图书查询" />
+                android:text=" 图书查询"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/nav_score"
             android:layout_width="match_parent"
-            android:clickable="true"
             android:layout_height="48dp"
+            android:clickable="true"
             android:gravity="center_vertical">
 
             <ImageView
@@ -58,16 +58,16 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:layout_marginLeft="8dp"
-                android:text=" 成绩查询" />
+                android:text=" 成绩查询"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/nav_course"
             android:layout_width="match_parent"
-            android:clickable="true"
             android:layout_height="48dp"
+            android:clickable="true"
             android:gravity="center_vertical">
 
             <ImageView
@@ -81,15 +81,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:textColor="#ffffff"
-                android:text=" 课程表" />
+                android:text=" 课程表"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/nav_channel"
             android:layout_width="match_parent"
-            android:clickable="true"
             android:layout_height="48dp"
+            android:clickable="true"
             android:gravity="center_vertical">
 
             <ImageView
@@ -102,32 +102,32 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:layout_marginLeft="8dp"
-                android:text=" 快速通道" />
+                android:text=" 快速通道"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/nav_settings"
             android:layout_width="match_parent"
-            android:clickable="true"
             android:layout_height="48dp"
+            android:clickable="true"
             android:gravity="center_vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="#ffffff"
                 android:layout_marginLeft="16dp"
-                android:src="@drawable/pathIcon" />
+                android:src="@drawable/pathicon"
+                android:textColor="#ffffff" />
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:layout_marginLeft="8dp"
-                android:text=" 设置" />
+                android:text=" 设置"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
@@ -148,8 +148,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:textColor="#ffffff"
-                android:text=" 退出当前账号" />
+                android:text=" 退出当前账号"
+                android:textColor="#ffffff" />
         </LinearLayout>
     </LinearLayout>
 
@@ -235,32 +235,32 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_marginTop="16dp"
+                            android:id="@+id/news_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:id="@+id/news_title"
-                            android:textColor="#0000cd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_marginTop="16dp"
+                            android:textColor="#0000cd" />
                         <TextView
                             android:id="@+id/news_url"
-                            android:textSize="12sp"
-                            android:textColor="#33691e"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:textColor="#33691e"
+                            android:textSize="12sp" />
                         <TextView
-                            android:background="#eeeeee"
                             android:layout_width="match_parent"
-                            android:layout_height="1dp" />
+                            android:layout_height="1dp"
+                            android:background="#eeeeee" />
 
                         <TextView
-                            android:layout_margin="16dp"
                             android:id="@+id/news_content"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
