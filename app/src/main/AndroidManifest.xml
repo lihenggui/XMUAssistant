@@ -29,9 +29,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Content"></activity>
+        <activity android:name=".Content" />
 
-        <activity android:name=".AppStart"></activity>
+        <activity android:name=".AppStart" />
 
         <activity
             android:name=".LoginActivity"
