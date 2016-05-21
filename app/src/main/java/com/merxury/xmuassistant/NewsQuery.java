@@ -2,7 +2,6 @@ package com.merxury.xmuassistant;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -13,7 +12,8 @@ import java.util.HashMap;
  * Modified by lihenggui on 2016/5/17
  * 获取网页新闻，存放在一个HashMap中，三个key分别是url,title,context
  * 获取到了数据之后可以使用HashMap中的get(KEY)来获取数据
- * ！！！！方法未测试！！！！需要检验！！！
+ * 测试通过，可以获取到新闻url+标题+内容
+ * 哈哈哈哈哈哈哈
  * 要使用getNewsInfo()方法来获取数据
  */
 public class NewsQuery {
@@ -68,17 +68,8 @@ public class NewsQuery {
             doc = Jsoup.connect(newsInfo.get("URL")).get();
             //选择整个页面的新闻部分，抓取所有内容
             Elements ListDiv = doc.select("#newsinfo > div > div > div > div");
-            String temp = ListDiv.text();
-            System.out.print(temp);
-            for (Element element : ListDiv) {
-                //新闻中的文字都有标题
-                Elements textInfos = element.getElementsByAttribute("span");
-                //获取每一行的内容
-                for (Element textInfo : textInfos) {
-                    text += textInfo.text().trim();
-                }
-            }
-            newsInfo.put("context", text);
+            String content = ListDiv.text();
+            newsInfo.put("content", content);
         } catch (IOException e) {
             e.printStackTrace();
         }
