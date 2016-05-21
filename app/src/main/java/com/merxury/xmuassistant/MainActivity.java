@@ -3,62 +3,43 @@ package com.merxury.xmuassistant;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.Selection;
-import android.text.Spannable;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.view.View.OnTouchListener;
-import android.widget.CheckBox;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity
         implements  ObservableScrollView.ScrollViewListener, OnTouchListener {
 
-    private ObservableScrollView scrollView1 = null;
-    public static OkHttpClient client;
-    public static String studentName;
-    public static String money;
-    boolean isLogin = false;
-    private BroadcastReceiver loginBroadcastReceiver;
-    private LocalBroadcastManager localBroadcastManager;
-    //ElecQuery elecQuery = new ElecQuery;
-    //private NewsQuery newsQuery = new NewsQuery();
-
     /**
      * 滚动显示和隐藏menu时，手指滑动需要达到的速度。
      */
     public static final int SNAP_VELOCITY = 200;
-
+    public static OkHttpClient client;
+    public static String studentName;
+    public static String money;
+    boolean isLogin = false;
+    private ObservableScrollView scrollView1 = null;
+    private BroadcastReceiver loginBroadcastReceiver;
+    //ElecQuery elecQuery = new ElecQuery;
+    //private NewsQuery newsQuery = new NewsQuery();
+    private LocalBroadcastManager localBroadcastManager;
     /**
      * 屏幕宽度值。
      */
@@ -122,6 +103,8 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout course;
     private LinearLayout channel;
     private LinearLayout settings;
+    private LinearLayout exit;
+    private SearchView searchView;
 
 
     @Override
@@ -174,8 +157,44 @@ public class MainActivity extends AppCompatActivity
                 setContentView(R.layout.settings);
             }
         });
+        //退出结束应用程序
+        exit = (LinearLayout) findViewById(R.id.nav_exit);
+        exit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        searchView = (SearchView) findViewById(R.id.searchBox);
+        //设置一个提交按钮
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            private String TAG = getClass().getSimpleName();
 
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "onQueryTextSubmit = " + query);
+                if (searchView != null) {
+                    // 得到输入管理对象
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        // 这将让键盘在所有的情况下都被隐藏，但是一般我们在点击搜索按钮后，输入法都会乖乖的自动隐藏的。
+                        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0); // 输入法如果是显示状态，那么就隐藏输入法
+                    }
+                    searchView.clearFocus(); // 不获取焦点
+                }
+                //获取到用户输入的文本内容然后调用tabs打开
+                String url = "http://210.34.4.28/opac/openlink.php?q0=" + query + "&sType0=01&pageSize=20&sort=score&desc=on&strText=" + query + "&doctype=01&strSearchType=title&displaypg=20";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         //exit.setOnClickListener(onclicklistener);
 
     }
@@ -337,47 +356,6 @@ public class MainActivity extends AppCompatActivity
         mVelocityTracker = null;
     }
 
-    class ScrollTask extends AsyncTask<Integer, Integer, Integer> {
-
-        @Override
-        protected Integer doInBackground(Integer... speed) {
-            int leftMargin = menuParams.leftMargin;
-            // 根据传入的速度来滚动界面，当滚动到达左边界或右边界时，跳出循环。
-            while (true) {
-                leftMargin = leftMargin + speed[0];
-                if (leftMargin > rightEdge) {
-                    leftMargin = rightEdge;
-                    break;
-                }
-                if (leftMargin < leftEdge) {
-                    leftMargin = leftEdge;
-                    break;
-                }
-                publishProgress(leftMargin);
-                // 为了要有滚动效果产生，每次循环使线程睡眠20毫秒，这样肉眼才能够看到滚动动画。
-                sleep(20);
-            }
-            if (speed[0] > 0) {
-                isMenuVisible = true;
-            } else {
-                isMenuVisible = false;
-            }
-            return leftMargin;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... leftMargin) {
-            menuParams.leftMargin = leftMargin[0];
-            menu.setLayoutParams(menuParams);
-        }
-
-        @Override
-        protected void onPostExecute(Integer leftMargin) {
-            menuParams.leftMargin = leftMargin;
-            menu.setLayoutParams(menuParams);
-        }
-    }
-
     /**
      * 使当前线程睡眠指定的毫秒数。
      *
@@ -391,14 +369,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
 
     @Override
     public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
@@ -417,6 +393,44 @@ public class MainActivity extends AppCompatActivity
             textView1.setText("Notice");//第三个小提示
         }
 
+    }
+
+    class ScrollTask extends AsyncTask<Integer, Integer, Integer> {
+
+        @Override
+        protected Integer doInBackground(Integer... speed) {
+            int leftMargin = menuParams.leftMargin;
+            // 根据传入的速度来滚动界面，当滚动到达左边界或右边界时，跳出循环。
+            while (true) {
+                leftMargin = leftMargin + speed[0];
+                if (leftMargin > rightEdge) {
+                    leftMargin = rightEdge;
+                    break;
+                }
+                if (leftMargin < leftEdge) {
+                    leftMargin = leftEdge;
+                    break;
+                }
+                publishProgress(leftMargin);
+                // 为了要有滚动效果产生，每次循环使线程睡眠5毫秒，这样肉眼才能够看到滚动动画。
+                //20ms太少了我改成了5ms，应该会流畅点
+                sleep(5);
+            }
+            isMenuVisible = speed[0] > 0;
+            return leftMargin;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... leftMargin) {
+            menuParams.leftMargin = leftMargin[0];
+            menu.setLayoutParams(menuParams);
+        }
+
+        @Override
+        protected void onPostExecute(Integer leftMargin) {
+            menuParams.leftMargin = leftMargin;
+            menu.setLayoutParams(menuParams);
+        }
     }
 
 
