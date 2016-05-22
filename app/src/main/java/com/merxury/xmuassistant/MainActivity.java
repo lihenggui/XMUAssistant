@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -21,6 +23,10 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+
+import java.util.HashMap;
+
 
 import okhttp3.OkHttpClient;
 
@@ -38,8 +44,15 @@ public class MainActivity extends AppCompatActivity
     private ObservableScrollView scrollView1 = null;
     private BroadcastReceiver loginBroadcastReceiver;
     //ElecQuery elecQuery = new ElecQuery;
-    //private NewsQuery newsQuery = new NewsQuery();
+
     private LocalBroadcastManager localBroadcastManager;
+    private TextView urlTextView;
+    private TextView titleTextView;
+    private TextView contentTextView;
+
+    HashMap<String, String> news ;
+
+
     /**
      * 屏幕宽度值。
      */
@@ -114,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_main);//显示界面
         initValues();
-        //displayNews();
+        displayNews();
         content.setOnTouchListener(this);
         LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -125,7 +138,9 @@ public class MainActivity extends AppCompatActivity
         library = (LinearLayout) findViewById(R.id.nav_library);
         library.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.library);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, QuickRoadActivity.class);
+                startActivity(intent);
             }
         });
         //跳转到分数查询界面
@@ -196,6 +211,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         //exit.setOnClickListener(onclicklistener);
+
 
     }
 
@@ -434,25 +450,49 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    /**这是获取新闻url、题目、内容的函数，出错了“Must supply a valid URL”！！！！！
-    public void displayNews(){
-        new Thread(){
-            @Override
-            public void run()
-            {
-                HashMap<String, String> news = new HashMap<String, String>();
-                TextView urlTextView = (TextView) findViewById(R.id.news_url);
-                TextView titleTextView = (TextView) findViewById(R.id.news_title);
-                TextView contentTextView = (TextView) findViewById(R.id.news_content);
-                news = newsQuery.getNewsInfo();
-                urlTextView.setText(news.get("url"));
-                titleTextView.setText(news.get("title"));
-                contentTextView.setText(news.get("content"));
+
+
+
+
+    public static final int UPDATE_TEXT = 1;
+
+    private  Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT:
+                {
+                    urlTextView = (TextView) findViewById(R.id.news_url);
+                    titleTextView = (TextView) findViewById(R.id.news_title);
+                    contentTextView = (TextView) findViewById(R.id.news_content);
+
+                    urlTextView.setText(news.get("url"));
+                    titleTextView.setText(news.get("title"));
+                    contentTextView.setText(news.get("content"));
+                }
+                    break;
+                default:
+                    break;
             }
-        }.start();
+        }
+
+    };
+
+
+    public void displayNews() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        news = NewsQuery.getNewsInfo();
+                        Message message = new Message();
+                        message.what = UPDATE_TEXT;
+                        handler.sendMessage(message); // 将Message对象发送出去
+                    }
+                }).start();
 
     }
-     */
+
+
 }
 
 
