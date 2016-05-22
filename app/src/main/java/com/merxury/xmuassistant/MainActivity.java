@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -26,9 +26,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
+import java.io.IOException;
 import java.util.HashMap;
-import java.lang.String;
 
 import okhttp3.OkHttpClient;
 
@@ -227,22 +226,6 @@ public class MainActivity extends AppCompatActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_main);//显示界面
 
-        preferences = getSharedPreferences("count", MODE_WORLD_READABLE);
-        int count = preferences.getInt("count", 0);
-
-//判断程序与第几次运行，如果是第一次运行则跳转到引导页面
-        if (count == 0) {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), AppStart.class);
-            startActivity(intent);
-            this.finish();
-        }
-
-        SharedPreferences.Editor editor = preferences.edit();
-//存入数据
-        editor.putInt("count", ++count);
-//提交修改
-        editor.commit();
         initValues();
         displayNews();
         DisplayElec();
@@ -292,7 +275,7 @@ public class MainActivity extends AppCompatActivity
         settings = (LinearLayout) findViewById(R.id.nav_settings);
         settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.settings);
+                setContentView(R.layout.settings_activity);
             }
         });
         //退出结束应用程序
@@ -537,6 +520,27 @@ public class MainActivity extends AppCompatActivity
         }).start();
     }
 
+    public void DisplayElec() {
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
+        String lou = pref.getString("lou", ""); //获取楼号
+        String roomID = pref.getString("roomID", "");//获取房间号
+        ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
+        TextView elecTextView = (TextView) findViewById(R.id.elecQuery);
+        try {
+            elecTextView.setText(elec.getElec());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void DisplayMoneyAndName() {
+        TextView elecTextView = (TextView) findViewById(R.id.studentName);
+        elecTextView.setText(studentName);
+        TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
+        xykTextview.setText("当前校园卡余额:" + money);
+    }
+
     class ScrollTask extends AsyncTask<Integer, Integer, Integer> {
 
         @Override
@@ -575,23 +579,6 @@ public class MainActivity extends AppCompatActivity
             menu.setLayoutParams(menuParams);
         }
     }
-
-    public void  DisplayElec() {
-    SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
-    String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
-    String lou = pref.getString("lou", ""); //获取楼号
-    String roomID = pref.getString("roomID", "");//获取房间号
-    ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
-    TextView elecTextView = (TextView)findViewById(R.id.elecQuery);
-    elecTextView.setText(elec.getMoney());
-}
-
-public void  DisplayMoneyAndName() {
-    TextView elecTextView = (TextView)findViewById(R.id.studentName);
-    elecTextView.setText(studentName);
-    TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
-    xykTextview.setText("当前校园卡余额:"+money);
-}
  }
 
 

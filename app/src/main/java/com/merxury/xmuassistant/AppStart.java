@@ -5,6 +5,7 @@ package com.merxury.xmuassistant;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 public class AppStart extends AppCompatActivity {
-
+    private SharedPreferences preferences;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -35,6 +36,22 @@ public class AppStart extends AppCompatActivity {
         }
         final View view = View.inflate(this, R.layout.start, null);
         setContentView(view);
+        preferences = getSharedPreferences("count", MODE_WORLD_READABLE);
+        int count = preferences.getInt("count", 0);
+
+        //判断程序与第几次运行，如果是第一次运行则跳转到引导页面
+        if (count == 0) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        //存入数据
+        editor.putInt("count", ++count);
+        //提交修改
+        editor.commit();
 
         //渐变展示启动屏
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
@@ -61,7 +78,7 @@ public class AppStart extends AppCompatActivity {
      * 跳转到...
      */
     private void redirectTo() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
