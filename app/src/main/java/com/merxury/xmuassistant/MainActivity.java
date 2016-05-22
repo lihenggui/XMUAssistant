@@ -3,6 +3,7 @@ package com.merxury.xmuassistant;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.os.Message;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,14 +45,14 @@ public class MainActivity extends AppCompatActivity
     boolean isLogin = false;
     private ObservableScrollView scrollView1 = null;
     private BroadcastReceiver loginBroadcastReceiver;
-    //ElecQuery elecQuery = new ElecQuery;
+
 
     private LocalBroadcastManager localBroadcastManager;
     private TextView urlTextView;
     private TextView titleTextView;
     private TextView contentTextView;
-
-    HashMap<String, String> news ;
+    private CardView newsCardView;
+    HashMap<String, String> news;
 
 
     /**
@@ -450,27 +452,29 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
-
-
     public static final int UPDATE_TEXT = 1;
-
-    private  Handler handler = new Handler() {
-
+    private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case UPDATE_TEXT:
-                {
+                case UPDATE_TEXT: {
                     urlTextView = (TextView) findViewById(R.id.news_url);
                     titleTextView = (TextView) findViewById(R.id.news_title);
                     contentTextView = (TextView) findViewById(R.id.news_content);
-
-                    urlTextView.setText(news.get("url"));
-                    titleTextView.setText(news.get("title"));
+                    newsCardView = (CardView) findViewById(R.id.newsCard);
+                    urlTextView.setText(news.get("URL"));
+                    titleTextView.setText(news.get("Title"));
                     contentTextView.setText(news.get("content"));
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url =news.get("URL");
+                            Intent intent= new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+                        }
+                    });
+
                 }
-                    break;
+                break;
                 default:
                     break;
             }
@@ -480,17 +484,18 @@ public class MainActivity extends AppCompatActivity
 
 
     public void displayNews() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        news = NewsQuery.getNewsInfo();
-                        Message message = new Message();
-                        message.what = UPDATE_TEXT;
-                        handler.sendMessage(message); // 将Message对象发送出去
-                    }
-                }).start();
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                news = NewsQuery.getNewsInfo();
+                Message message = new Message();
+                message.what = UPDATE_TEXT;
+                handler.sendMessage(message); // 将Message对象发送出去
+            }
+        }).start();
     }
+
+
 
 
 }

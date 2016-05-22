@@ -344,6 +344,7 @@
                 </android.support.v7.widget.CardView>
                 <!--新闻标题、url、内容-->
                 <android.support.v7.widget.CardView
+                    android:id="@+id/newsCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
