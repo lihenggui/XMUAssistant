@@ -568,6 +568,7 @@ public class MainActivity extends AppCompatActivity
             menu.setLayoutParams(menuParams);
         }
 
+
         @Override
         protected void onPostExecute(Integer leftMargin) {
             menuParams.leftMargin = leftMargin;

@@ -12,4 +12,5 @@ protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.query_results);
         }
 
+
         }

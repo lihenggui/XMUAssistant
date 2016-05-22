@@ -10,5 +10,6 @@ public class LibraryQuery extends MainActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.query_libraries);
+
     }
 }

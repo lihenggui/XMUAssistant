@@ -25,6 +25,7 @@ public class CardQuery {
     private String username;
     private String password;
 
+
     public String getMoney() {
         try {
             String ixmures = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", username, password);

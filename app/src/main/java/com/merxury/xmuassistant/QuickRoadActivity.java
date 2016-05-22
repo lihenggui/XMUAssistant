@@ -16,6 +16,7 @@ public class QuickRoadActivity extends MainActivity {
     private LinearLayout lecture;
     private LinearLayout affair;
     private LinearLayout library;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
