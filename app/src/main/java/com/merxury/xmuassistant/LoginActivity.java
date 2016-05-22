@@ -340,8 +340,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 //删除末尾，留下有用的信息，暴力传参
                 MainActivity.studentName = tempName.substring(0, tempName.length() - 5);
                 //查询电费
-                ElecQuery queryRoom = new ElecQuery("09", "8号楼", "0436");
-                System.out.println(queryRoom.getElec());
+                //ElecQuery queryRoom = new ElecQuery("09", "8号楼", "0436");
+                //System.out.println(queryRoom.getElec());
 
             } catch (IOException e) {
                 e.printStackTrace();

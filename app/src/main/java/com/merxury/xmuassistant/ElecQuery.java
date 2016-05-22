@@ -30,6 +30,7 @@ public class ElecQuery {
     private String roomID;//房间号
     private String moneyLeft; //余额信息
 
+
     public ElecQuery(String xiaoqu, String lou, String roomID) {
         this.xiaoqu = xiaoqu;
         this.lou = lou;

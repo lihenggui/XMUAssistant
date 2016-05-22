@@ -1,16 +1,15 @@
 package com.merxury.xmuassistant;
 
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.preference.PreferenceManager;
-        import android.support.v7.app.AppCompatActivity;
-        import android.view.View;
-        import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
-        import android.widget.EditText;
-        import android.widget.Spinner;
-
-import com.merxury.xmuassistant.R;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 /**
  * 从配置文件中读取宿舍号信息
@@ -25,11 +24,11 @@ import com.merxury.xmuassistant.R;
  */
 public class SettingsActivity extends AppCompatActivity {
 
-    private Spinner Xiaoqu = (Spinner) findViewById(R.id.xiaoqu);  //关联宿舍楼群的Spinner
-    private Spinner Lou = (Spinner) findViewById(R.id.lou);   //关联楼号的Spinner
+    private Spinner Xiaoqu;
+    private Spinner Lou;
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
-    private EditText room = (EditText) findViewById(R.id.room);
+    private EditText room;
     //  private EditText louID = (EditText) findViewById(R.id.louid);
     private String ID = "";  //存放小区ID
     private String louid = "";   //获取楼号
@@ -37,8 +36,24 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
+        setContentView(R.layout.settings_activity);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        Xiaoqu = (Spinner) findViewById(R.id.xiaoqu);  //关联宿舍楼群的Spinner
+        Lou = (Spinner) findViewById(R.id.lou);   //关联楼号的Spinner
+        room = (EditText) findViewById(R.id.room);
+        Button saveButton = (Button) findViewById(R.id.save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String roomid = room.getText().toString();   //获取房间号
+                editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                editor.putString("xiaoqu", ID);            //小区ID写入data文件
+                editor.putString("lou", louid);          //楼号写入data文件
+                editor.putString("roomID", roomid);    //房间号写入data文件
+                editor.commit();
+                finish();
+            }
+        });
         Xiaoqu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -215,11 +230,6 @@ public class SettingsActivity extends AppCompatActivity {
             Lou.setAdapter(lou_adapter);
         }
 
-        String roomid = room.getText().toString();   //获取房间号
-        editor = getSharedPreferences("data", MODE_PRIVATE).edit();
-        editor.putString("xiaoqu", ID);            //小区ID写入data文件
-        editor.putString("lou", louid);          //楼号写入data文件
-        editor.putString("roomID", roomid);    //房间号写入data文件
-        editor.commit();
+
     }
 }
