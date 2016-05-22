@@ -28,38 +28,40 @@ import android.widget.TextView;
 
 
 import java.util.HashMap;
-
+import java.lang.String;
 
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity
-        implements  ObservableScrollView.ScrollViewListener, OnTouchListener {
+        implements ObservableScrollView.ScrollViewListener, OnTouchListener {
 
     /**
      * 滚动显示和隐藏menu时，手指滑动需要达到的速度。
      */
     public static final int SNAP_VELOCITY = 200;
+    public static final int UPDATE_TEXT = 1;
     public static OkHttpClient client;
     public static String studentName;
     public static String money;
     boolean isLogin = false;
+    HashMap<String, String> news;
     private ObservableScrollView scrollView1 = null;
     private BroadcastReceiver loginBroadcastReceiver;
-
-
     private LocalBroadcastManager localBroadcastManager;
     private TextView urlTextView;
     private TextView titleTextView;
     private TextView contentTextView;
     private CardView newsCardView;
-    HashMap<String, String> news;
-
+    private CardView newsCardView2;
+    private CardView newsCardView3;
+    private CardView newsCardView4;
+    private CardView newsCardView5;
+    private SharedPreferences  preferences;
 
     /**
      * 屏幕宽度值。
      */
     private int screenWidth;
-
     /**
      * menu最多可以滑动到的左边缘。值由menu布局的宽度来定，marginLeft到达此值之后，不能再减少。
      */
@@ -68,47 +70,38 @@ public class MainActivity extends AppCompatActivity
      * menu最多可以滑动到的右边缘。值恒为0，即marginLeft到达0之后，不能增加。
      */
     private int rightEdge = 0;
-
     /**
      * menu完全显示时，留给content的宽度值。
      */
     private int menuPadding = 540;
-
     /**
      * 主内容的布局。
      */
     private View content;
-
     /**
      * menu的布局。
      */
     private View menu;
-
     /**
      * menu布局的参数，通过此参数来更改leftMargin的值。
      */
     private LinearLayout.LayoutParams menuParams;
-
     /**
      * 记录手指按下时的横坐标。
      */
     private float xDown;
-
     /**
      * 记录手指移动时的横坐标。
      */
     private float xMove;
-
     /**
      * 记录手机抬起时的横坐标。
      */
     private float xUp;
-
     /**
      * menu当前是显示还是隐藏。只有完全显示或隐藏menu时才会更改此值，滑动过程中此值无效。
      */
     private boolean isMenuVisible;
-
     /**
      * 用于计算手指滑动的速度。
      */
@@ -121,6 +114,111 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout exit;
     private SearchView searchView;
 
+    /**
+     * 隐藏输入的密码,放在了LoginActivity，还未测试
+     * <p/>
+     * private void init() {
+     * mPasswordEditText = (EditText) findViewById(R.id.password_enter);
+     * mPasswordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+     * }
+     */
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT: {
+                    //1
+                    urlTextView = (TextView) findViewById(R.id.news_url);
+                    titleTextView = (TextView) findViewById(R.id.news_title);
+                    contentTextView = (TextView) findViewById(R.id.news_content);
+                    newsCardView = (CardView) findViewById(R.id.newsCard);
+                    urlTextView.setText(news.get("URL1"));
+                    titleTextView.setText(news.get("Title1"));
+                    contentTextView.setText(news.get("content1").substring(0, 200));
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url = news.get("URL1");
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //2
+                    urlTextView = (TextView) findViewById(R.id.news_url2);
+                    titleTextView = (TextView) findViewById(R.id.news_title2);
+                    contentTextView = (TextView) findViewById(R.id.news_content2);
+                    newsCardView2 = (CardView) findViewById(R.id.newsCard2);
+                    urlTextView.setText(news.get("URL2"));
+                    titleTextView.setText(news.get("Title2"));
+                    contentTextView.setText(news.get("content2").substring(0, 200));
+                    newsCardView2.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url = news.get("URL2");
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //3
+                    urlTextView = (TextView) findViewById(R.id.news_url3);
+                    titleTextView = (TextView) findViewById(R.id.news_title3);
+                    contentTextView = (TextView) findViewById(R.id.news_content3);
+                    newsCardView3 = (CardView) findViewById(R.id.newsCard3);
+                    urlTextView.setText(news.get("URL3"));
+                    titleTextView.setText(news.get("Title3"));
+                    contentTextView.setText(news.get("content3").substring(0, 200));
+                    newsCardView3.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url = news.get("URL3");
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //4
+                    urlTextView = (TextView) findViewById(R.id.news_url4);
+                    titleTextView = (TextView) findViewById(R.id.news_title4);
+                    contentTextView = (TextView) findViewById(R.id.news_content4);
+                    newsCardView4 = (CardView) findViewById(R.id.newsCard4);
+                    urlTextView.setText(news.get("URL4"));
+                    titleTextView.setText(news.get("Title4"));
+                    contentTextView.setText(news.get("content4").substring(0, 200));
+                    newsCardView4.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url = news.get("URL4");
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //5
+                    urlTextView = (TextView) findViewById(R.id.news_url5);
+                    titleTextView = (TextView) findViewById(R.id.news_title5);
+                    contentTextView = (TextView) findViewById(R.id.news_content5);
+                    newsCardView5 = (CardView) findViewById(R.id.newsCard4);
+                    urlTextView.setText(news.get("URL5"));
+                    titleTextView.setText(news.get("Title5"));
+                    contentTextView.setText(news.get("content5").substring(0, 200));
+                    newsCardView5.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url = news.get("URL5");
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+                        }
+                    });
+                }
+                break;
+                default:
+                    break;
+            }
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +226,27 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_main);//显示界面
+
+        preferences = getSharedPreferences("count", MODE_WORLD_READABLE);
+        int count = preferences.getInt("count", 0);
+
+//判断程序与第几次运行，如果是第一次运行则跳转到引导页面
+        if (count == 0) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), AppStart.class);
+            startActivity(intent);
+            this.finish();
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+//存入数据
+        editor.putInt("count", ++count);
+//提交修改
+        editor.commit();
         initValues();
         displayNews();
+        DisplayElec();
+        DisplayMoneyAndName();
         content.setOnTouchListener(this);
         LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -141,22 +258,26 @@ public class MainActivity extends AppCompatActivity
         library.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, QuickRoadActivity.class);
+                intent.setClass(MainActivity.this, LibraryQuery.class);
                 startActivity(intent);
             }
         });
-        //跳转到分数查询界面
+        //跳转到QueryResults
         score = (LinearLayout) findViewById(R.id.nav_score);
         score.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.score);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, QueryResults.class);
+                startActivity(intent);
             }
         });
         //跳转到课程表界面
         course = (LinearLayout) findViewById(R.id.nav_course);
         course.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.course);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, Course.class);
+                startActivity(intent);
             }
         });
         //跳转到QuickRoadActivity
@@ -216,15 +337,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
-    /**
-     * 隐藏输入的密码,放在了LoginActivity，还未测试
-
-     private void init() {
-     mPasswordEditText = (EditText) findViewById(R.id.password_enter);
-     mPasswordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-     }
-     */
 
     /**
      * 初始化一些关键性数据。包括获取屏幕的宽度，给content布局重新设置宽度，给menu布局重新设置宽度和偏移距离等。
@@ -413,6 +525,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void displayNews() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                news = NewsQuery.getNewsInfo();
+                Message message = new Message();
+                message.what = UPDATE_TEXT;
+                handler.sendMessage(message); // 将Message对象发送出去
+            }
+        }).start();
+    }
+
     class ScrollTask extends AsyncTask<Integer, Integer, Integer> {
 
         @Override
@@ -451,53 +575,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-    public static final int UPDATE_TEXT = 1;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_TEXT: {
-                    urlTextView = (TextView) findViewById(R.id.news_url);
-                    titleTextView = (TextView) findViewById(R.id.news_title);
-                    contentTextView = (TextView) findViewById(R.id.news_content);
-                    newsCardView = (CardView) findViewById(R.id.newsCard);
-                    urlTextView.setText(news.get("URL"));
-                    titleTextView.setText(news.get("Title"));
-                    contentTextView.setText(news.get("content"));
-                    newsCardView.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url =news.get("URL");
-                            Intent intent= new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-                        }
-                    });
-
-                }
-                break;
-                default:
-                    break;
-            }
-        }
-
-    };
-
-
-    public void displayNews() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                news = NewsQuery.getNewsInfo();
-                Message message = new Message();
-                message.what = UPDATE_TEXT;
-                handler.sendMessage(message); // 将Message对象发送出去
-            }
-        }).start();
-    }
-
-
-
-
+    public void  DisplayElec() {
+    SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+    String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
+    String lou = pref.getString("lou", ""); //获取楼号
+    String roomID = pref.getString("roomID", "");//获取房间号
+    ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
+    TextView elecTextView = (TextView)findViewById(R.id.elecQuery);
+    elecTextView.setText(elec.getMoney());
 }
+
+public void  DisplayMoneyAndName() {
+    TextView elecTextView = (TextView)findViewById(R.id.studentName);
+    elecTextView.setText(studentName);
+    TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
+    xykTextview.setText("当前校园卡余额:"+money);
+}
+ }
 
 
