@@ -3,12 +3,11 @@ package com.merxury.xmuassistant;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -26,9 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import java.util.HashMap;
-
 
 import okhttp3.OkHttpClient;
 
@@ -39,27 +36,23 @@ public class MainActivity extends AppCompatActivity
      * 滚动显示和隐藏menu时，手指滑动需要达到的速度。
      */
     public static final int SNAP_VELOCITY = 200;
+    public static final int UPDATE_TEXT = 1;
     public static OkHttpClient client;
     public static String studentName;
     public static String money;
     boolean isLogin = false;
+    HashMap<String, String> news;
     private ObservableScrollView scrollView1 = null;
     private BroadcastReceiver loginBroadcastReceiver;
-
-
     private LocalBroadcastManager localBroadcastManager;
     private TextView urlTextView;
     private TextView titleTextView;
     private TextView contentTextView;
     private CardView newsCardView;
-    HashMap<String, String> news;
-
-
     /**
      * 屏幕宽度值。
      */
     private int screenWidth;
-
     /**
      * menu最多可以滑动到的左边缘。值由menu布局的宽度来定，marginLeft到达此值之后，不能再减少。
      */
@@ -68,47 +61,38 @@ public class MainActivity extends AppCompatActivity
      * menu最多可以滑动到的右边缘。值恒为0，即marginLeft到达0之后，不能增加。
      */
     private int rightEdge = 0;
-
     /**
      * menu完全显示时，留给content的宽度值。
      */
     private int menuPadding = 540;
-
     /**
      * 主内容的布局。
      */
     private View content;
-
     /**
      * menu的布局。
      */
     private View menu;
-
     /**
      * menu布局的参数，通过此参数来更改leftMargin的值。
      */
     private LinearLayout.LayoutParams menuParams;
-
     /**
      * 记录手指按下时的横坐标。
      */
     private float xDown;
-
     /**
      * 记录手指移动时的横坐标。
      */
     private float xMove;
-
     /**
      * 记录手机抬起时的横坐标。
      */
     private float xUp;
-
     /**
      * menu当前是显示还是隐藏。只有完全显示或隐藏menu时才会更改此值，滑动过程中此值无效。
      */
     private boolean isMenuVisible;
-
     /**
      * 用于计算手指滑动的速度。
      */
@@ -121,6 +105,42 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout exit;
     private SearchView searchView;
 
+    /**
+     * 隐藏输入的密码,放在了LoginActivity，还未测试
+
+     private void init() {
+     mPasswordEditText = (EditText) findViewById(R.id.password_enter);
+     mPasswordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+     }
+     */
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT: {
+                    urlTextView = (TextView) findViewById(R.id.news_url);
+                    titleTextView = (TextView) findViewById(R.id.news_title);
+                    contentTextView = (TextView) findViewById(R.id.news_content);
+                    newsCardView = (CardView) findViewById(R.id.newsCard);
+                    urlTextView.setText(news.get("URL1"));
+                    titleTextView.setText(news.get("Title1"));
+                    contentTextView.setText(news.get("content1"));
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            String url = news.get("URL");
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+                        }
+                    });
+
+                }
+                break;
+                default:
+                    break;
+            }
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +176,9 @@ public class MainActivity extends AppCompatActivity
         course = (LinearLayout) findViewById(R.id.nav_course);
         course.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.course);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, CourseTable.class);
+                startActivity(intent);
             }
         });
         //跳转到QuickRoadActivity
@@ -171,7 +193,9 @@ public class MainActivity extends AppCompatActivity
         settings = (LinearLayout) findViewById(R.id.nav_settings);
         settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setContentView(R.layout.settings);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
             }
         });
         //退出结束应用程序
@@ -216,15 +240,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
-    /**
-     * 隐藏输入的密码,放在了LoginActivity，还未测试
-
-     private void init() {
-     mPasswordEditText = (EditText) findViewById(R.id.password_enter);
-     mPasswordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-     }
-     */
 
     /**
      * 初始化一些关键性数据。包括获取屏幕的宽度，给content布局重新设置宽度，给menu布局重新设置宽度和偏移距离等。
@@ -413,6 +428,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void displayNews() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                news = NewsQuery.getNewsInfo();
+                Message message = new Message();
+                message.what = UPDATE_TEXT;
+                handler.sendMessage(message); // 将Message对象发送出去
+            }
+        }).start();
+    }
+
     class ScrollTask extends AsyncTask<Integer, Integer, Integer> {
 
         @Override
@@ -449,50 +476,6 @@ public class MainActivity extends AppCompatActivity
             menuParams.leftMargin = leftMargin;
             menu.setLayoutParams(menuParams);
         }
-    }
-
-
-    public static final int UPDATE_TEXT = 1;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_TEXT: {
-                    urlTextView = (TextView) findViewById(R.id.news_url);
-                    titleTextView = (TextView) findViewById(R.id.news_title);
-                    contentTextView = (TextView) findViewById(R.id.news_content);
-                    newsCardView = (CardView) findViewById(R.id.newsCard);
-                    urlTextView.setText(news.get("URL"));
-                    titleTextView.setText(news.get("Title"));
-                    contentTextView.setText(news.get("content"));
-                    newsCardView.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url =news.get("URL");
-                            Intent intent= new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-                        }
-                    });
-
-                }
-                break;
-                default:
-                    break;
-            }
-        }
-
-    };
-
-
-    public void displayNews() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                news = NewsQuery.getNewsInfo();
-                Message message = new Message();
-                message.what = UPDATE_TEXT;
-                handler.sendMessage(message); // 将Message对象发送出去
-            }
-        }).start();
     }
 
 
