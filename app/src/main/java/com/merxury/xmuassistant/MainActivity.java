@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     public static String money;
     boolean isLogin = false;
     HashMap<String, String> news;
+    String elecString;
     private ObservableScrollView scrollView1 = null;
     private BroadcastReceiver loginBroadcastReceiver;
     private LocalBroadcastManager localBroadcastManager;
@@ -55,8 +56,7 @@ public class MainActivity extends AppCompatActivity
     private CardView newsCardView3;
     private CardView newsCardView4;
     private CardView newsCardView5;
-    private SharedPreferences  preferences;
-
+    private SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
     /**
      * 屏幕宽度值。
      */
@@ -112,8 +112,6 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout settings;
     private LinearLayout exit;
     private SearchView searchView;
-    String elecString;
-
     /**
      * 隐藏输入的密码,放在了LoginActivity，还未测试
      * <p/>
@@ -228,7 +226,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_main);//显示界面
-
+        studentName = pref.getString("studentName", "");
+        money = pref.getString("CardMoney", "");
         initValues();
         displayNews();
         DisplayMoneyAndName();

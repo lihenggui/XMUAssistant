@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -68,6 +69,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     public String studentName;
     public String cardMoney;
     public String money;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences pref;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -99,7 +102,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 .cookieJar(cookieJar)
                 .build();
         client = client1;
-
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -332,16 +335,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 Elements moneyLeft = elementsDiv.select("font");
                 //保存到money变量中
                 money = moneyLeft.last().text();
-                //暴力传参，应该要改，先这样吧
-               // MainActivity.money = money;
+
                 //选择姓名所在的区域
                 Elements nameElems = ixmudoc.select("#pf1037 > div > div.portletContent > table > tbody > tr > td:nth-child(2) > div > ul > li:nth-child(1)");
                 String tempName = nameElems.text();
+                studentName = tempName.substring(0, tempName.length() - 5);
                 //删除末尾，留下有用的信息，暴力传参
                // MainActivity.studentName = tempName.substring(0, tempName.length() - 5);
-                //查询电费
-                //ElecQuery queryRoom = new ElecQuery("09", "8号楼", "0436");
-                //System.out.println(queryRoom.getElec());
+                editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                editor.putString("CardMoney", money);            //小区ID写入data文件
+                editor.putString("studentName", studentName);          //楼号写入data文件
+                editor.commit();
 
             } catch (IOException e) {
                 e.printStackTrace();
