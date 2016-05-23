@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     private CardView newsCardView3;
     private CardView newsCardView4;
     private CardView newsCardView5;
-    private SharedPreferences pref;
+
     /**
      * 屏幕宽度值。
      */
@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout settings;
     private LinearLayout exit;
     private SearchView searchView;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences pref;
     /**
      * 隐藏输入的密码,放在了LoginActivity，还未测试
      * <p/>

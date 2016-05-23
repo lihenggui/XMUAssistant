@@ -42,22 +42,6 @@ public class SettingsActivity extends AppCompatActivity {
         Xiaoqu = (Spinner) findViewById(R.id.xiaoqu);  //关联宿舍楼群的Spinner
         Lou = (Spinner) findViewById(R.id.lou);   //关联楼号的Spinner
         room = (EditText) findViewById(R.id.room);
-        Button saveButton = (Button) findViewById(R.id.save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String roomid = room.getText().toString();   //获取房间号
-                editor = getSharedPreferences("data", MODE_PRIVATE).edit();
-                editor.putString("xiaoqu", ID);            //小区ID写入data文件
-                editor.putString("lou", louid);          //楼号写入data文件
-                editor.putString("roomID", roomid);    //房间号写入data文件
-                editor.commit();
-                Intent intent = new Intent();
-                intent.setClass(SettingsActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
         Xiaoqu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -90,6 +74,22 @@ public class SettingsActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
                 Lou.setSelection(0);
+            }
+        });
+        Button saveButton = (Button) findViewById(R.id.save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String roomid = room.getText().toString();   //获取房间号
+                editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                editor.putString("xiaoqu", ID);            //小区ID写入data文件
+                editor.putString("lou", louid);          //楼号写入data文件
+                editor.putString("roomID", roomid);    //房间号写入data文件
+                editor.commit();
+                Intent intent = new Intent();
+                intent.setClass(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
