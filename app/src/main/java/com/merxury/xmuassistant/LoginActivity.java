@@ -321,7 +321,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 //发送网络请求
                 String ixmures = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", mEmail, mPassword);
                 //传cookie，暴力传参
-                MainActivity.client = client;
+                //MainActivity.client = client;
                 //使用jsoup解析页面，将html转换成Document实例
                 //获取到网页全部代码
                 Document ixmudoc = Jsoup.parse(ixmures);
@@ -333,12 +333,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 //保存到money变量中
                 money = moneyLeft.last().text();
                 //暴力传参，应该要改，先这样吧
-                MainActivity.money = money;
+               // MainActivity.money = money;
                 //选择姓名所在的区域
                 Elements nameElems = ixmudoc.select("#pf1037 > div > div.portletContent > table > tbody > tr > td:nth-child(2) > div > ul > li:nth-child(1)");
                 String tempName = nameElems.text();
                 //删除末尾，留下有用的信息，暴力传参
-                MainActivity.studentName = tempName.substring(0, tempName.length() - 5);
+               // MainActivity.studentName = tempName.substring(0, tempName.length() - 5);
                 //查询电费
                 //ElecQuery queryRoom = new ElecQuery("09", "8号楼", "0436");
                 //System.out.println(queryRoom.getElec());

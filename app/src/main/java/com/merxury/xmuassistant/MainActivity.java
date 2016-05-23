@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout settings;
     private LinearLayout exit;
     private SearchView searchView;
+    String elecString;
 
     /**
      * 隐藏输入的密码,放在了LoginActivity，还未测试
@@ -207,6 +208,8 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(url));
                             startActivity(intent);
+                            TextView elecTextView = (TextView) findViewById(R.id.elecQuery);
+                            elecTextView.setText(elecString);
 
                         }
                     });
@@ -228,7 +231,6 @@ public class MainActivity extends AppCompatActivity
 
         initValues();
         displayNews();
-        DisplayElec();
         DisplayMoneyAndName();
         content.setOnTouchListener(this);
         LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
@@ -512,6 +514,16 @@ public class MainActivity extends AppCompatActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+                    String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
+                    String lou = pref.getString("lou", ""); //获取楼号
+                    String roomID = pref.getString("roomID", "");//获取房间号
+                    ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
+                    elecString = elec.getElec();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 news = NewsQuery.getNewsInfo();
                 Message message = new Message();
                 message.what = UPDATE_TEXT;
@@ -520,19 +532,7 @@ public class MainActivity extends AppCompatActivity
         }).start();
     }
 
-    public void DisplayElec() {
-        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
-        String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
-        String lou = pref.getString("lou", ""); //获取楼号
-        String roomID = pref.getString("roomID", "");//获取房间号
-        ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
-        TextView elecTextView = (TextView) findViewById(R.id.elecQuery);
-        try {
-            elecTextView.setText(elec.getElec());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public void DisplayMoneyAndName() {
         TextView elecTextView = (TextView) findViewById(R.id.studentName);
