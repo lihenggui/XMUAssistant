@@ -208,11 +208,12 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(url));
                             startActivity(intent);
-                            TextView elecTextView = (TextView) findViewById(R.id.elecQuery);
-                            elecTextView.setText(elecString);
+
 
                         }
                     });
+                    TextView elecTextView = (TextView) findViewById(R.id.elecQuery);
+                    elecTextView.setText("当前电费余额:"+elecString);
                 }
                 break;
                 default:
