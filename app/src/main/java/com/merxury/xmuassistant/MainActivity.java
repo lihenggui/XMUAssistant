@@ -26,6 +26,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private CardView newsCardView3;
     private CardView newsCardView4;
     private CardView newsCardView5;
+    private TextView elecTextView;
 
     /**
      * 屏幕宽度值。
@@ -210,7 +213,7 @@ public class MainActivity extends AppCompatActivity
                             startActivity(intent);
                         }
                     });
-                    TextView elecTextView = (TextView) findViewById(R.id.elecQuery);
+                    elecTextView = (TextView) findViewById(R.id.elecQuery);
                     elecTextView.setText("当前电费余额:"+elecString);
                 }
                 break;
