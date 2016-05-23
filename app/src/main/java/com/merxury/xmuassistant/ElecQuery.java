@@ -168,7 +168,7 @@ public class ElecQuery {
                 //如果请求成功返回，那么分析网页内容
                 Document elecDoc = Jsoup.parse(response.body().string());
                 //得到网页余额然后返回
-                Elements elecElem = elecDoc.select("#lableft");
+                Elements elecElem = elecDoc.select("#dxgvElec_DXDataRow0 > td:nth-child(7)");
                 moneyLeft = elecElem.text();
                 return elecElem.text();
             } else {
