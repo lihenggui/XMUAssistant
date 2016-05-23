@@ -504,10 +504,10 @@ public class MainActivity extends AppCompatActivity
             textView1.setText("Course");//第一个小提示
         } else if (1884 <= scrollView.getScrollY() && scrollView.getScrollY() <= 3791) {
             textView2.setBackgroundColor(0xffFF8f00);
-            textView1.setText("News to read");//第二个小提示
+            textView1.setText("Balance");//第二个小提示
         } else if (scrollView.getScrollY() >= 3791) {
             textView2.setBackgroundColor(0xff009688);
-            textView1.setText("Notice");//第三个小提示
+            textView1.setText("News to read");//第三个小提示
         }
 
     }
