@@ -260,8 +260,8 @@ public class MainActivity extends AppCompatActivity
         course = (LinearLayout) findViewById(R.id.nav_course);
         course.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, Course.class);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://ssfw.xmu.edu.cn/cmstar/index.portal?.pn=p1201_p3530_p3531"));
                 startActivity(intent);
             }
         });
@@ -284,7 +284,9 @@ public class MainActivity extends AppCompatActivity
         exit = (LinearLayout) findViewById(R.id.nav_exit);
         exit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
         searchView = (SearchView) findViewById(R.id.searchBox);
