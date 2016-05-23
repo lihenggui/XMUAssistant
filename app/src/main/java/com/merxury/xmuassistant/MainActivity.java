@@ -523,7 +523,7 @@ public class MainActivity extends AppCompatActivity
                     String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
                     String lou = pref.getString("lou", ""); //获取楼号
                     String roomID = pref.getString("roomID", "");//获取房间号
-                    ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
+                    ElecQuery elec = new ElecQuery(xiaoqu,lou,roomID);
                     elecString = elec.getElec();
                 } catch (IOException e) {
                     e.printStackTrace();
