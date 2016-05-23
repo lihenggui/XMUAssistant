@@ -1,5 +1,6 @@
 package com.merxury.xmuassistant;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -51,6 +52,9 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString("lou", louid);          //楼号写入data文件
                 editor.putString("roomID", roomid);    //房间号写入data文件
                 editor.commit();
+                Intent intent = new Intent();
+                intent.setClass(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

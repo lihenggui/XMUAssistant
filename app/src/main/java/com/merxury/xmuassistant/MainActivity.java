@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     private CardView newsCardView3;
     private CardView newsCardView4;
     private CardView newsCardView5;
-    private SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+    private SharedPreferences pref;
     /**
      * 屏幕宽度值。
      */
@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_main);//显示界面
+        pref = getSharedPreferences("data", MODE_PRIVATE);
         studentName = pref.getString("studentName", "");
         money = pref.getString("CardMoney", "");
         initValues();

@@ -28,6 +28,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_edittext"
         android:hint="Password"
+        android:inputType="textPassword"
         android:padding="4dip"
         android:singleLine="true"
         android:textColorHint="#AAAAAA"
