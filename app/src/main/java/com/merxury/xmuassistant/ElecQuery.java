@@ -22,7 +22,7 @@ import okhttp3.Response;
  * getmoney方法是直接调用保存好的电费余额，如果余额检测为空会自动调用getElec方法获取余额
  */
 public class ElecQuery {
-    public static OkHttpClient client = new OkHttpClient();
+    public static OkHttpClient client = new OkHttpClient.Builder().build();
     private String url = "http://elec.xmu.edu.cn/PdmlWebSetup/Pages/SMSMain.aspx";//请求url的地址
     private String xiaoqu;//请求小区的地址
     private String lou;//楼号

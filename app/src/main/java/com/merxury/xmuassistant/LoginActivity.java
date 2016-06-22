@@ -265,6 +265,10 @@ public class LoginActivity extends Activity {
                 //获取到网页全部代码
                 Document ixmudoc = Jsoup.parse(ixmures);
                 //获得一系列的子标签,这里的pf1041特指学生卡信息的部分
+                if (ixmures.contains("Authentication failed")) {
+                    return false;
+                    //如果用户名密码错误，返回的信息即有登陆失败的字样，返回失败
+                }
                 Elements elementsDiv = ixmudoc.getElementsByAttributeValue("id", "pf1041");
                 //余额使用font属性来高亮，所以选择font属性就可以抓取到余额信息
                 //余额信息在最后一个元素里，使用.last输出
