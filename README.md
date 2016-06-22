@@ -16,6 +16,7 @@ XMUAssistant - 厦大助手（暂定名）
 5. 课表功能的实现
 6. （致命bug）因为使用了最新的sdk，在6.0上默认权限为关，第一次打开软件之后就会fc,需要修复。
 7. 后台服务并不能正确推送余额信息，需要修改
+8. 有一些新闻消息内容过短，如果直接使用substring截取的话会报错。如StringIndexOutOfBoundsException: length=91; regionStart=0; regionLength=200。 在截取子串的时候需要对字符串长度进行判定
 
 
 #3. 需要改进的地方
