@@ -43,7 +43,7 @@ public class AppStart extends AppCompatActivity {
 
         //渐变展示启动屏
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-        aa.setDuration(2000);
+        aa.setDuration(200);
         view.startAnimation(aa);
         aa.setAnimationListener(new Animation.AnimationListener() {
 

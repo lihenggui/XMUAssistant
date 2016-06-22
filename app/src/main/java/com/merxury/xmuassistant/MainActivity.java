@@ -244,18 +244,18 @@ public class MainActivity extends AppCompatActivity
         library = (LinearLayout) findViewById(R.id.nav_library);
         library.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, LibraryQuery.class);
-                startActivity(intent);
+                /*
+                此处留空，用于跳转到图书查询页面
+                 */
             }
         });
         //跳转到QueryResults
         score = (LinearLayout) findViewById(R.id.nav_score);
         score.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, QueryResults.class);
-                startActivity(intent);
+              /*
+              此处留空，跳转到查询结果
+               */
             }
         });
         //跳转到课程表界面

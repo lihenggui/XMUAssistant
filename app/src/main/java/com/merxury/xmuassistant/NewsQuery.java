@@ -48,7 +48,7 @@ public class NewsQuery {
             //根据指定的Xselector语句抓取网页内元素，这里抓取的是除了置顶以外的第一条新闻
             Elements ListDiv = doc.select("#wp_news_w13 > table > tbody > tr:nth-child(" + (i + 2) + ") > td:nth-child(2) > table > tbody > tr > td:nth-child(1) > a");
             //抓取子页面的URL，然后打开，要删除最后一个斜杠，否则会出错
-            String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("href").trim().toString();
+            String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("href").trim();
             //获得页面的标题
             String newsTitle = ListDiv.text();
             newsInfo.put("URL" + i, newsURL);
