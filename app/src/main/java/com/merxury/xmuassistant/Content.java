@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.merxury.xmuassistant.ObservableScrollView;
 import com.merxury.xmuassistant.R;
 
-public class Content extends Activity implements ObservableScrollView.ScrollViewListener {
+public class Content extends Activity {
 
     private ObservableScrollView scrollView1 = null;
     private ObservableScrollView scrollView2 = null;
@@ -37,29 +37,9 @@ public class Content extends Activity implements ObservableScrollView.ScrollView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-        scrollView1 = (ObservableScrollView) findViewById(R.id.scrollView);
-        scrollView1.setScrollViewListener(this);
 
     }
 
-    @Override
-    public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
-                                int oldx, int oldy) {
-        TextView textView1= (TextView) findViewById(R.id.textContent);
-        TextView textView2= (TextView) findViewById(R.id.singleLine);
-        System.out.println(scrollView.getScrollY());
-        if(0<=scrollView.getScrollY()&&scrollView.getScrollY()<=1884){
-            textView2.setBackgroundColor(0xff2196f3);
-            textView1.setText("Course");//第一个小提示
-        }
-        else if(1884<=scrollView.getScrollY()&&scrollView.getScrollY()<=3791){
-            textView2.setBackgroundColor(0xffFF8f00);
-            textView1.setText("News to read");//第二个小提示
-        }else if(scrollView.getScrollY()>=3791){
-            textView2.setBackgroundColor(0xff009688);
-            textView1.setText("Notice");//第三个小提示
-        }
 
-    }
 
 }
