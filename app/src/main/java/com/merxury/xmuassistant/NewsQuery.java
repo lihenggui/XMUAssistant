@@ -22,7 +22,7 @@ import java.util.List;
  *
  * 方法介绍
  * getAllNewsFromServer：从服务器端获取新闻信息并写入到数据库中，返回的是一个布尔值
- * getAllNews从数据库中读取获取新闻的方法，返回的是一个List集合类
+ * getAllNews从数据库中读取获取新闻的方法，返回的是一个List<news>集合类
  *
  */
 public class NewsQuery extends SQLiteOpenHelper {
