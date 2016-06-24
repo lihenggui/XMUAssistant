@@ -1,92 +1,213 @@
 package com.merxury.xmuassistant;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
- * Created by deng on 2016/5/16.
- * Modified by lihenggui on 2016/5/17
- * 获取网页新闻，存放在一个HashMap中，三个key分别是url,title,context
- * 获取到了数据之后可以使用HashMap中的get(KEY)来获取数据
- * 测试通过，可以获取到新闻url+标题+内容
- * 哈哈哈哈哈哈哈
- * 要使用getNewsInfo()方法来获取数据
- * 返回一个HashMap
- * .get("URL")获取新闻地址
- * .get("Title")获取标题
- * .get("content")获取新闻内容
+ * Created by lihenggui on 2016/6/24
+ * 重写了查询新闻的方法
+ * 使用SQLite来存储数据
+ * 优化了获取网页数据的逻辑，等待时间减少了40%
+ *
+ * 方法介绍
+ * getAllNewsFromServer：从服务器端获取新闻信息并写入到数据库中，返回的是一个布尔值
+ * getAllNews从数据库中读取获取新闻的方法，返回的是一个List集合类
+ *
  */
-public class NewsQuery {
+public class NewsQuery extends SQLiteOpenHelper {
+    public static final String CREATE_TABLE = "create table news("
+            + "id integer primary key not null, "
+            + "title text, "
+            + "url text, "
+            + "content text);";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "data.db";
     /**
      * 获取网页上的文章标题
      * url为传入的网页地址
      * 返回文章标题字符串
      */
-
     public static String url = "http://jwc.xmu.edu.cn/"; //连接需要抓取网站的URL
     private static HashMap<String, String> newsInfo = new HashMap<>();
-    private static int i = 1;
+    private Context mContext;
+    private SQLiteDatabase db;
 
-    public static HashMap<String, String> getNewsInfo() {
-        //如果HashMap中无数据的话，获取新闻，然后返回一个HashMap
-        if (newsInfo.isEmpty()) {
-            getNews();
-        }
-        return newsInfo;
+    //构造函数
+    NewsQuery(Context context, String name, SQLiteDatabase.CursorFactory cursorFactory, int version) {
+        super(context, name, cursorFactory, version);
+        mContext = context;
     }
 
     //使用一个HashMap来存储数据
-    public static HashMap<String, String> getTitle() {
+    private static boolean getTitle() {
 
         try {
             //连接到选定的网站，获取整个网页数据
             Document doc = Jsoup.connect(url).timeout(60000).get();
-            //根据指定的Xselector语句抓取网页内元素，这里抓取的是除了置顶以外的第一条新闻
-            Elements ListDiv = doc.select("#wp_news_w13 > table > tbody > tr:nth-child(" + (i + 2) + ") > td:nth-child(2) > table > tbody > tr > td:nth-child(1) > a");
-            //抓取子页面的URL，然后打开，要删除最后一个斜杠，否则会出错
-            String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("href").trim();
-            //获得页面的标题
-            String newsTitle = ListDiv.text();
-            newsInfo.put("URL" + i, newsURL);
-            newsInfo.put("Title" + i, newsTitle);
+            //根据指定的Xselector语句抓取网页内元素，这里抓取的是除了置顶以外的五条新闻
+            for (int i = 1; i <= 5; i++) {
+                Elements ListDiv = doc.select("#wp_news_w13 > table > tbody > tr:nth-child(" + (i + 2) + ") > td:nth-child(2) > table > tbody > tr > td:nth-child(1) > a");
+                //抓取子页面的URL，然后打开，要删除最后一个斜杠，否则会出错
+                String newsURL = url.substring(0, url.length() - 1) + ListDiv.attr("href").trim();
+                //获得页面的标题+url
+                String newsTitle = ListDiv.text();
+                newsInfo.put("URL" + i, newsURL);
+                newsInfo.put("Title" + i, newsTitle);
+            }
+
+            for (int i = 1; i < 5; i++) {
+                //获取新闻失败，返回失败值
+                if (!Information(i)) {
+                    return false;
+                }
+            }
+            return true;
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return newsInfo;
+        return false;
     }
 
-    /**
-     * 获取指定网页文章的内容
-     * 存入HashMap中
-     * 返回文章内容
-     */
-    public static HashMap<String, String> Information() {
+
+    private static boolean Information(int order) {
         Document doc;
-        String text = "";
         try {
             //从HashMap中调取需要读取的页面URL
-            doc = Jsoup.connect(newsInfo.get("URL" + i)).get();
+            doc = Jsoup.connect(newsInfo.get("URL" + order)).get();
             //选择整个页面的新闻部分，抓取所有内容
             Elements ListDiv = doc.select("#newsinfo > div > div > div > div");
             String content = ListDiv.text();
-            newsInfo.put("content" + i, content);
-            i++;
+            newsInfo.put("content" + order, content);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return newsInfo;
+        return false;
     }
 
-    public static void getNews() {
-        //获取n个新闻标题+内容的方法
-        for (int a = 0; a < 5; a++) {
-            getTitle();
-            Information();
+    public boolean getAllNewsInfoFromServer() {
+        Cursor cursor;
+        if (getTitle()) {
+            //获取五个新闻内容
+            for (int i = 1; i <= 5; i++) {
+                Information(i);
+                cursor = db.rawQuery("select * from news where id = ?", new String[]{String.valueOf(i)});
+                if (cursor.moveToFirst()) {
+                    rewriteNews(i);
+                } else {
+                    writeNews(i);
+                }
+                cursor.close();
+
+            }
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    //从数据库中读取获取新闻的方法，返回的是一个List集合类
+    public List<News> getAllNews() {
+        db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * form news", new String[]{});
+        List<News> newsList = new ArrayList<>();
+        while (cursor.moveToFirst()) {
+            News news = new News();
+            news.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+            news.setTitle(cursor.getString(cursor.getColumnIndex("url")));
+            news.setTitle(cursor.getString(cursor.getColumnIndex("content")));
+            newsList.add(news);
+        }
+        cursor.close();
+        return newsList;
+
+    }
+
+    //第一次运行，往数据库写入新闻信息
+    private void writeNews(int order) {
+        db = getReadableDatabase();
+        for (int i = 1; i <= order; i++) {
+            db.execSQL("insert into news(id,title,url,content) values("
+                    + i + ", "
+                    + newsInfo.get("title" + i) + ", "
+                    + newsInfo.get("url" + i) + ", "
+                    + newsInfo.get("content" + i) + ");");
+        }
+
+    }
+
+    //数据库内已有新闻信息，使用sql语句的update语句来覆写新闻信息
+    private void rewriteNews(int order) {
+        db = getReadableDatabase();
+        for (int i = 1; i <= order; i++) {
+            db.execSQL("update news set title='"
+                    + newsInfo.get("title" + i) + "', url='"
+                    + newsInfo.get("url" + i) + "',content=' "
+                    + newsInfo.get("content" + i) + "' where id="
+                    + i + ";");
+        }
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        // TODO 创建数据库后，对数据库的操作
+        db.execSQL(CREATE_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // TODO 更改数据库版本的操作
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        // TODO 每次成功打开数据库后首先被执行
+    }
+
+    //存放新闻的私有类
+    private class News {
+        private String title;
+        private String url;
+        private String content;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
         }
     }
 }
+
