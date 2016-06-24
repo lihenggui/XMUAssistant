@@ -10,6 +10,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    <TextView
+        android:id="@+id/studentName"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="64sp"
+        android:layout_marginBottom="64sp"/>
 
 
 </LinearLayout>
