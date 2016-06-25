@@ -1,33 +1,25 @@
 package com.merxury.xmuassistant;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 
@@ -41,12 +33,9 @@ public class MainActivity extends AppCompatActivity {
     public static OkHttpClient client;
     public static String studentName;
     public static String money;
-    boolean isLogin = false;
-    HashMap<String, String> news;
+    List<NewsQuery.News> news;
     String elecString;
-    private ObservableScrollView scrollView1 = null;
-    private BroadcastReceiver loginBroadcastReceiver;
-    private LocalBroadcastManager localBroadcastManager;
+
     private TextView urlTextView;
     private TextView titleTextView;
     private TextView contentTextView;
@@ -57,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView newsCardView5;
     private TextView elecTextView;
 
-    private VelocityTracker mVelocityTracker;
-    private LinearLayout library;
+
     private LinearLayout score;
     private LinearLayout course;
     private LinearLayout channel;
@@ -68,14 +56,133 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
     /**
-     * 隐藏输入的密码,放在了LoginActivity，还未测试
-     * <p>
-     * private void init() {
-     * mPasswordEditText = (EditText) findViewById(R.id.password_enter);
-     * mPasswordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-     * }
+     * 将获取到的电费信息及新闻显示在CardView里，修改界面只能在主线程中进行，
      */
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT: {
+                    //显示第一条新闻
+                    urlTextView = (TextView) findViewById(R.id.news_url);
+                    titleTextView = (TextView) findViewById(R.id.news_title);
+                    contentTextView = (TextView) findViewById(R.id.news_content);
+                    newsCardView = (CardView) findViewById(R.id.newsCard);
+                    NewsQuery.News temp = news.get(0);
+                    urlTextView.setText(temp.getUrl());
+                    titleTextView.setText(temp.getTitle());
+                    if (temp.getContent().length() > 200) {
+                        contentTextView.setText(temp.getContent().substring(0, 200));
+                    } else {
+                        contentTextView.setText(temp.getContent());
+                    }
+                    final String url = temp.getUrl();
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
 
+                        }
+                    });
+                    //显示第二条新闻
+                    urlTextView = (TextView) findViewById(R.id.news_url2);
+                    titleTextView = (TextView) findViewById(R.id.news_title2);
+                    contentTextView = (TextView) findViewById(R.id.news_content2);
+                    newsCardView2 = (CardView) findViewById(R.id.newsCard2);
+                    temp = news.get(1);
+                    urlTextView.setText(temp.getUrl());
+                    titleTextView.setText(temp.getTitle());
+                    if (temp.getContent().length() > 200) {
+                        contentTextView.setText(temp.getContent().substring(0, 200));
+                    } else {
+                        contentTextView.setText(temp.getContent());
+                    }
+                    final String url1 = temp.getUrl();
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url1));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //显示第三条新闻
+                    urlTextView = (TextView) findViewById(R.id.news_url3);
+                    titleTextView = (TextView) findViewById(R.id.news_title3);
+                    contentTextView = (TextView) findViewById(R.id.news_content3);
+                    newsCardView3 = (CardView) findViewById(R.id.newsCard3);
+                    temp = news.get(2);
+                    urlTextView.setText(temp.getUrl());
+                    titleTextView.setText(temp.getTitle());
+                    if (temp.getContent().length() > 200) {
+                        contentTextView.setText(temp.getContent().substring(0, 200));
+                    } else {
+                        contentTextView.setText(temp.getContent());
+                    }
+                    final String url2 = temp.getUrl();
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url2));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //显示第四条新闻
+                    urlTextView = (TextView) findViewById(R.id.news_url4);
+                    titleTextView = (TextView) findViewById(R.id.news_title4);
+                    contentTextView = (TextView) findViewById(R.id.news_content4);
+                    newsCardView4 = (CardView) findViewById(R.id.newsCard4);
+                    temp = news.get(3);
+                    urlTextView.setText(temp.getUrl());
+                    titleTextView.setText(temp.getTitle());
+                    if (temp.getContent().length() > 200) {
+                        contentTextView.setText(temp.getContent().substring(0, 200));
+                    } else {
+                        contentTextView.setText(temp.getContent());
+                    }
+                    final String url3 = temp.getUrl();
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url3));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //显示第五条新闻
+                    urlTextView = (TextView) findViewById(R.id.news_url5);
+                    titleTextView = (TextView) findViewById(R.id.news_title5);
+                    contentTextView = (TextView) findViewById(R.id.news_content5);
+                    newsCardView5 = (CardView) findViewById(R.id.newsCard5);
+                    temp = news.get(4);
+                    urlTextView.setText(temp.getUrl());
+                    titleTextView.setText(temp.getTitle());
+                    if (temp.getContent().length() > 200) {
+                        contentTextView.setText(temp.getContent().substring(0, 200));
+                    } else {
+                        contentTextView.setText(temp.getContent());
+                    }
+                    final String url4 = temp.getUrl();
+                    newsCardView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url4));
+                            startActivity(intent);
+
+                        }
+                    });
+                    //显示获取到的电费
+                    elecTextView = (TextView) findViewById(R.id.elecQuery);
+                    elecTextView.setText("当前电费余额:" + elecString);
+                }
+                break;
+                default:
+                    break;
+            }
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,62 +193,55 @@ public class MainActivity extends AppCompatActivity {
         pref = getSharedPreferences("data", MODE_PRIVATE);
         studentName = pref.getString("studentName", "");
         money = pref.getString("CardMoney", "");
-        displayNews();
+        displayNews(new NewsQuery(this, "news", null, 1));
         DisplayMoneyAndName();
         LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //跳转到图书查询界面
-        library = (LinearLayout) findViewById(R.id.nav_library);
-        library.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                /*
-                此处留空，用于跳转到图书查询页面
-                 */
-            }
-        });
-        //跳转到QueryResults
-        score = (LinearLayout) findViewById(R.id.nav_score);
-        score.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-              /*
-              此处留空，跳转到查询结果
-               */
-            }
-        });
-        //跳转到课程表界面
-        course = (LinearLayout) findViewById(R.id.nav_course);
-        course.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://ssfw.xmu.edu.cn/cmstar/index.portal?.pn=p1201_p3530_p3531"));
-                startActivity(intent);
-            }
-        });
-        //跳转到QuickRoadActivity
-        channel = (LinearLayout) findViewById(R.id.nav_channel);
-        channel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, QuickRoadActivity.class);
-                startActivity(intent);
-            }
-        });//跳转到SettingActivity
-        settings = (LinearLayout) findViewById(R.id.nav_settings);
-        settings.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setContentView(R.layout.settings_activity);
-            }
-        });
-        //退出结束应用程序
-        exit = (LinearLayout) findViewById(R.id.nav_exit);
-        exit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//        library = (LinearLayout) findViewById(R.id.nav_library);
+//
+//        跳转到QueryResults
+//        score = (LinearLayout) findViewById(R.id.nav_score);
+//        score.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {/       /*
+//             此处留空，跳转到查询结果
+//             */
+//            }
+//        });
+        // 跳转到课程表界面
+//        course = (LinearLayout) findViewById(R.id.nav_course);
+//        course.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse("http://ssfw.xmu.edu.cn/cmstar/index.portal?.pn=p1201_p3530_p3531"));
+//                startActivity(intent);
+//            }
+//        });
+//        //跳转到QuickRoadActivity
+//        channel = (LinearLayout) findViewById(R.id.nav_channel);
+//        channel.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(MainActivity.this, QuickRoadActivity.class);
+//                startActivity(intent);
+//            }
+//        });//跳转到SettingActivity
+//        settings = (LinearLayout) findViewById(R.id.nav_settings);
+//        settings.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                setContentView(R.layout.settings_activity);
+//            }
+//        });
+//        //退出结束应用程序
+//        exit = (LinearLayout) findViewById(R.id.nav_exit);
+//        exit.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(MainActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         searchView = (SearchView) findViewById(R.id.searchBox);
         //设置一个提交按钮
         searchView.setSubmitButtonEnabled(true);
@@ -173,13 +273,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        //exit.setOnClickListener(onclicklistener);
+
     }
 
     /**
-     *因涉及到网络操作，所以在子线程中获取电费以及新闻
+     * 因涉及到网络操作，所以在子线程中获取电费以及新闻
      */
-    public void displayNews() {
+    public void displayNews(final NewsQuery newsQuery) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -193,120 +293,25 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                news = NewsQuery.getNewsInfo();
+                newsQuery.getAllNewsInfoFromServer();
+                news = newsQuery.getAllNews();
                 Message message = new Message();
                 message.what = UPDATE_TEXT;
                 handler.sendMessage(message); // 将Message对象发送出去
             }
         }).start();
     }
-    /**
-     * 将获取到的电费信息及新闻显示在CardView里，修改界面只能在主线程中进行，
-     */
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_TEXT: {
-                    //显示第一条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url);
-                    titleTextView = (TextView) findViewById(R.id.news_title);
-                    contentTextView = (TextView) findViewById(R.id.news_content);
-                    newsCardView = (CardView) findViewById(R.id.newsCard);
-                    urlTextView.setText(news.get("URL1"));
-                    titleTextView.setText(news.get("Title1"));
-                    contentTextView.setText(news.get("content1").substring(0, 200));
-                    newsCardView.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url = news.get("URL1");
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
 
-                        }
-                    });
-                    //显示第二条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url2);
-                    titleTextView = (TextView) findViewById(R.id.news_title2);
-                    contentTextView = (TextView) findViewById(R.id.news_content2);
-                    newsCardView2 = (CardView) findViewById(R.id.newsCard2);
-                    urlTextView.setText(news.get("URL2"));
-                    titleTextView.setText(news.get("Title2"));
-                    contentTextView.setText(news.get("content2").substring(0, 200));
-                    newsCardView2.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url = news.get("URL2");
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-
-                        }
-                    });
-                    //显示第三条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url3);
-                    titleTextView = (TextView) findViewById(R.id.news_title3);
-                    contentTextView = (TextView) findViewById(R.id.news_content3);
-                    newsCardView3 = (CardView) findViewById(R.id.newsCard3);
-                    urlTextView.setText(news.get("URL3"));
-                    titleTextView.setText(news.get("Title3"));
-                    contentTextView.setText(news.get("content3").substring(0, 200));
-                    newsCardView3.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url = news.get("URL3");
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-
-                        }
-                    });
-                    //显示第四条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url4);
-                    titleTextView = (TextView) findViewById(R.id.news_title4);
-                    contentTextView = (TextView) findViewById(R.id.news_content4);
-                    newsCardView4 = (CardView) findViewById(R.id.newsCard4);
-                    urlTextView.setText(news.get("URL4"));
-                    titleTextView.setText(news.get("Title4"));
-                    contentTextView.setText(news.get("content4").substring(0, 200));
-                    newsCardView4.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url = news.get("URL4");
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-
-                        }
-                    });
-                    //显示第五条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url5);
-                    titleTextView = (TextView) findViewById(R.id.news_title5);
-                    contentTextView = (TextView) findViewById(R.id.news_content5);
-                    newsCardView5 = (CardView) findViewById(R.id.newsCard4);
-                    urlTextView.setText(news.get("URL5"));
-                    titleTextView.setText(news.get("Title5"));
-                    contentTextView.setText(news.get("content5").substring(0, 200));
-                    newsCardView5.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            String url = news.get("URL5");
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-                        }
-                    });
-                    //显示获取到的电费
-                    elecTextView = (TextView) findViewById(R.id.elecQuery);
-                    elecTextView.setText("当前电费余额:" + elecString);
-                }
-                break;
-                default:
-                    break;
-            }
+    public void DisplayMoneyAndName() {
+        try {
+            TextView elecTextView = (TextView) findViewById(R.id.studentName);
+            //elecTextView.setText(studentName);
+            TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
+            // xykTextview.setText("当前校园卡余额:" + money);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
-    };
-    public void DisplayMoneyAndName() {
-        TextView elecTextView = (TextView) findViewById(R.id.studentName);
-        elecTextView.setText(studentName);
-        TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
-        xykTextview.setText("当前校园卡余额:" + money);
     }
 
 

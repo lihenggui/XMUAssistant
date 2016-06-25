@@ -15,15 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by lihenggui on 2016/6/24
+ * Rewrited by lihenggui on 2016/6/24
  * 重写了查询新闻的方法
  * 使用SQLite来存储数据
  * 优化了获取网页数据的逻辑，等待时间减少了40%
- *
+ * <p/>
  * 方法介绍
  * getAllNewsFromServer：从服务器端获取新闻信息并写入到数据库中，返回的是一个布尔值
  * getAllNews从数据库中读取获取新闻的方法，返回的是一个List<news>集合类
- *
  */
 public class NewsQuery extends SQLiteOpenHelper {
     public static final String CREATE_TABLE = "create table news("
@@ -66,7 +65,7 @@ public class NewsQuery extends SQLiteOpenHelper {
                 newsInfo.put("Title" + i, newsTitle);
             }
 
-            for (int i = 1; i < 5; i++) {
+            for (int i = 1; i <= 5; i++) {
                 //获取新闻失败，返回失败值
                 if (!Information(i)) {
                     return false;
@@ -78,7 +77,7 @@ public class NewsQuery extends SQLiteOpenHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
 
@@ -102,17 +101,16 @@ public class NewsQuery extends SQLiteOpenHelper {
         Cursor cursor;
         if (getTitle()) {
             //获取五个新闻内容
+            db = getWritableDatabase();
+            cursor = db.query("news", null, null, null, null, null, null);
             for (int i = 1; i <= 5; i++) {
-                Information(i);
-                cursor = db.rawQuery("select * from news where id = ?", new String[]{String.valueOf(i)});
-                if (cursor.moveToFirst()) {
+                if (cursor.moveToNext()) {
                     rewriteNews(i);
                 } else {
                     writeNews(i);
                 }
-                cursor.close();
-
             }
+            cursor.close();
             return true;
         } else {
             return false;
@@ -123,13 +121,13 @@ public class NewsQuery extends SQLiteOpenHelper {
     //从数据库中读取获取新闻的方法，返回的是一个List集合类
     public List<News> getAllNews() {
         db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * form news", new String[]{});
+        Cursor cursor = db.query("news", null, null, null, null, null, null);
         List<News> newsList = new ArrayList<>();
-        while (cursor.moveToFirst()) {
+        while (cursor.moveToNext()) {
             News news = new News();
             news.setTitle(cursor.getString(cursor.getColumnIndex("title")));
-            news.setTitle(cursor.getString(cursor.getColumnIndex("url")));
-            news.setTitle(cursor.getString(cursor.getColumnIndex("content")));
+            news.setUrl(cursor.getString(cursor.getColumnIndex("url")));
+            news.setContent(cursor.getString(cursor.getColumnIndex("content")));
             newsList.add(news);
         }
         cursor.close();
@@ -139,27 +137,22 @@ public class NewsQuery extends SQLiteOpenHelper {
 
     //第一次运行，往数据库写入新闻信息
     private void writeNews(int order) {
-        db = getReadableDatabase();
-        for (int i = 1; i <= order; i++) {
-            db.execSQL("insert into news(id,title,url,content) values("
-                    + i + ", "
-                    + newsInfo.get("title" + i) + ", "
-                    + newsInfo.get("url" + i) + ", "
-                    + newsInfo.get("content" + i) + ");");
-        }
-
+        db = getWritableDatabase();
+        db.execSQL("insert into news(id,title,url,content) values("
+                + order + ", '"
+                + newsInfo.get("title" + order) + "', '"
+                + newsInfo.get("url" + order) + "',' "
+                + newsInfo.get("content" + order) + "');");
     }
 
     //数据库内已有新闻信息，使用sql语句的update语句来覆写新闻信息
     private void rewriteNews(int order) {
-        db = getReadableDatabase();
-        for (int i = 1; i <= order; i++) {
-            db.execSQL("update news set title='"
-                    + newsInfo.get("title" + i) + "', url='"
-                    + newsInfo.get("url" + i) + "',content=' "
-                    + newsInfo.get("content" + i) + "' where id="
-                    + i + ";");
-        }
+        db = getWritableDatabase();
+        db.execSQL("update news set title='"
+                + newsInfo.get("Title" + order) + "', url='"
+                + newsInfo.get("URL" + order) + "',content=' "
+                + newsInfo.get("content" + order) + "' where id="
+                + order + ";");
     }
 
     @Override
@@ -180,7 +173,7 @@ public class NewsQuery extends SQLiteOpenHelper {
     }
 
     //存放新闻的私有类
-    private class News {
+    public class News {
         private String title;
         private String url;
         private String content;
