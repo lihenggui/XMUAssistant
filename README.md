@@ -16,12 +16,12 @@ XMUAssistant - 厦大助手（暂定名）
 5. 课表功能的实现
 6. （致命bug）因为使用了最新的sdk，在6.0上默认权限为关，第一次打开软件之后就会fc,需要修复。（已修复）
 7. 后台服务并不能正确推送余额信息，需要修改
-8. 有一些新闻消息内容过短，如果直接使用substring截取的话会报错。如StringIndexOutOfBoundsException: length=91; regionStart=0; regionLength=200。 在截取子串的时候需要对字符串长度进行判定
+8. 有一些新闻消息内容过短，如果直接使用substring截取的话会报错。如StringIndexOutOfBoundsException: length=91; regionStart=0; regionLength=200。 在截取子串的时候需要对字符串长度进行判定(已修复)
 
 
 #3. 需要改进的地方
 1. 侧滑栏界面外观功能等等（建议使用系统自带的Navigation Drawer重写）
-2. 所有方法获取的信息使用minisql或者配置文件存储，读取速度更快
+2. 所有方法获取的信息使用minisql或者配置文件存储，读取速度更快 （新闻获取部分已修复）
 3. 做到下滑刷新当前页面信息
 4. 做到定时定点查询学生卡电费余额，并且能够正确推送信息
 5. 主页上的card可点击范围更大
