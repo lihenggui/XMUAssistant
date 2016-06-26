@@ -17,7 +17,8 @@
         <item
             android:id="@+id/nav_channel"
             android:icon="@drawable/ic_menu_balance"
-            android:title="快速通道" />
+            android:title="快速通道"
+            android:clickable="true"/>
     </group>
 
     <item android:title="">

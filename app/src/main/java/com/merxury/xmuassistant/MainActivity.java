@@ -7,11 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
@@ -22,7 +27,8 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
+        ,NavigationView.OnNavigationItemSelectedListener  {
 
     /**
      * 滚动显示和隐藏menu时，手指滑动需要达到的速度。
@@ -197,57 +203,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        displayNews(new NewsQuery(this, "news", null, 1));
 //        CardQuery cardQuery = new CardQuery(pref.getString("account", ""), pref.getString("password", ""));
 //        DisplayMoneyAndName();
-//        LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
-//        跳转到图书查询界面
-//        library = (LinearLayout) findViewById(R.id.nav_library);
-//
-//        跳转到QueryResults
-//        score = (LinearLayout) findViewById(R.id.nav_score);
-//        score.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {/       /*
-//             此处留空，跳转到查询结果
-//             */
-//            }
-//        });
-        // 跳转到课程表界面
-//        course = (LinearLayout) findViewById(R.id.nav_course);
-//        course.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse("http://ssfw.xmu.edu.cn/cmstar/index.portal?.pn=p1201_p3530_p3531"));
-//                startActivity(intent);
-//            }
-//        });
-//        //跳转到QuickRoadActivity
-//        channel = (LinearLayout) findViewById(R.id.nav_channel);
-//        channel.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this, QuickRoadActivity.class);
-//                startActivity(intent);
-//            }
-//        });//跳转到SettingActivity
-//        settings = (LinearLayout) findViewById(R.id.nav_settings);
-//        settings.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                setContentView(R.layout.settings_activity);
-//            }
-//        });
-//        //退出结束应用程序
-//        exit = (LinearLayout) findViewById(R.id.nav_exit);
-//        exit.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//            }
+
 //        });
         searchView = (SearchView) findViewById(R.id.searchBox);
         //设置一个提交按钮
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         searchView.setSubmitButtonEnabled(true);
+
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             private String TAG = getClass().getSimpleName();
-
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, "onQueryTextSubmit = " + query);
@@ -275,6 +242,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     /**
      * 因涉及到网络操作，所以在子线程中获取电费以及新闻
@@ -329,6 +312,92 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }).start();
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_library) {
+            // Handle the camera action
+        } else if (id == R.id.nav_score) {
+
+        } else if (id == R.id.nav_course) {
+
+        } else if (id == R.id.nav_channel) {
+               Intent intent = new Intent();
+               intent.setClass(MainActivity.this, QuickRoadActivity.class);
+               startActivity(intent);
+
+        } else if (id == R.id.nav_settings) {
+
+        } else if (id == R.id.nav_exit) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    //        跳转到图书查询界面
+
+//        library = (LinearLayout) findViewById(R.id.nav_library);
+//
+//        跳转到QueryResults
+//        score = (LinearLayout) findViewById(R.id.nav_score);
+//        score.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {/       /*
+//             此处留空，跳转到查询结果
+//             */
+//            }
+//        });
+    // 跳转到课程表界面
+//        course = (LinearLayout) findViewById(R.id.nav_course);
+//        course.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse("http://ssfw.xmu.edu.cn/cmstar/index.portal?.pn=p1201_p3530_p3531"));
+//                startActivity(intent);
+//            }
+//        });
+//        //跳转到QuickRoadActivity
+//        channel = (LinearLayout) findViewById(R.id.nav_channel);
+//        channel.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(MainActivity.this, QuickRoadActivity.class);
+//                startActivity(intent);
+//            }
+//        });//跳转到SettingActivity
+//        settings = (LinearLayout) findViewById(R.id.nav_settings);
+//        settings.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                setContentView(R.layout.settings_activity);
+//            }
+//        });
+//        //退出结束应用程序
+//        exit = (LinearLayout) findViewById(R.id.nav_exit);
+//        exit.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(MainActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//            }
 
 
 
