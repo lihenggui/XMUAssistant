@@ -7,13 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * 滚动显示和隐藏menu时，手指滑动需要达到的速度。
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static String money;
     List<NewsQuery.News> news;
     String elecString;
+    private SwipeRefreshLayout swipeLayout;
 
     private TextView urlTextView;
     private TextView titleTextView;
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     //显示获取到的电费
                     elecTextView = (TextView) findViewById(R.id.elecQuery);
                     elecTextView.setText("当前电费余额:" + elecString);
+                    swipeLayout.setRefreshing(false);
                 }
                 break;
                 default:
@@ -186,19 +187,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_main);//显示界面
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);//SwipeLayout
+        swipeLayout.setOnRefreshListener(this);
         pref = getSharedPreferences("data", MODE_PRIVATE);
         studentName = pref.getString("studentName", "");
         money = pref.getString("CardMoney", "");
-        displayNews(new NewsQuery(this, "news", null, 1));
-        DisplayMoneyAndName();
-        LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //跳转到图书查询界面
+//        displayNews(new NewsQuery(this, "news", null, 1));
+//        CardQuery cardQuery = new CardQuery(pref.getString("account", ""), pref.getString("password", ""));
+//        DisplayMoneyAndName();
+//        LinearLayout library = (LinearLayout) findViewById(R.id.nav_library);
+//        跳转到图书查询界面
 //        library = (LinearLayout) findViewById(R.id.nav_library);
 //
 //        跳转到QueryResults
@@ -305,14 +305,32 @@ public class MainActivity extends AppCompatActivity {
     public void DisplayMoneyAndName() {
         try {
             TextView elecTextView = (TextView) findViewById(R.id.studentName);
-            //elecTextView.setText(studentName);
+            elecTextView.setText(studentName);
             TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
-            // xykTextview.setText("当前校园卡余额:" + money);
+            xykTextview.setText("当前校园卡余额:" + money);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
     }
+
+    public void onRefresh() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    displayNews(new NewsQuery(getApplicationContext(), "news", null, 1));
+                    DisplayMoneyAndName();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
+
+
 
 
 }

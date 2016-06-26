@@ -1,5 +1,7 @@
 package com.merxury.xmuassistant;
 
+import android.content.SharedPreferences;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -24,9 +26,14 @@ public class CardQuery {
     private String studentName;
     private String username;
     private String password;
+    private SharedPreferences pref;
 
+    CardQuery(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
-    public String getMoney() {
+    public String getMoney(String username, String password) {
         try {
             String ixmures = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", username, password);
             Document ixmudoc = Jsoup.parse(ixmures);
@@ -37,8 +44,6 @@ public class CardQuery {
             Elements moneyLeft = elementsDiv.select("font");
             //保存到money变量中
             money = moneyLeft.last().text();
-            //暴力传参，应该要改，先这样吧
-            MainActivity.money = money;
             //选择姓名所在的区域
             Elements nameElems = ixmudoc.select("#pf1037 > div > div.portletContent > table > tbody > tr > td:nth-child(2) > div > ul > li:nth-child(1)");
             String tempName = nameElems.text();
@@ -50,7 +55,7 @@ public class CardQuery {
         return money;
     }
 
-    public String sendPost(String url, String username, String password) throws IOException {
+    private String sendPost(String url, String username, String password) throws IOException {
         //将登录的参数添加到HashMap中
         HashMap<String, String> params = new HashMap<>();
         params.put("IDToken0", "");

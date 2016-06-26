@@ -30,8 +30,6 @@ public class NewsQuery extends SQLiteOpenHelper {
             + "title text, "
             + "url text, "
             + "content text);";
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "data.db";
     /**
      * 获取网页上的文章标题
      * url为传入的网页地址
