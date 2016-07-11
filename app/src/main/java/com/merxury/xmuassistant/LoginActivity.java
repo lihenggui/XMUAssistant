@@ -22,6 +22,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -59,7 +61,9 @@ public class LoginActivity extends Activity {
     public String studentName;
     public String money;
     private SharedPreferences.Editor editor;
+    private SharedPreferences sp;
     private SharedPreferences pref;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -67,9 +71,12 @@ public class LoginActivity extends Activity {
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private CheckBox rem_pw;         //记住密码复选框
+    private CheckBox auto_login;   //自动登录复选框
     private View mProgressView;
     private View mLoginFormView;
     private LocalBroadcastManager localBroadcastManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,10 @@ public class LoginActivity extends Activity {
         /*
         持久化保存cookies~一次登陆即有效~
          */
+        sp = this.getSharedPreferences("data", MODE_PRIVATE);
+        rem_pw = (CheckBox) findViewById(R.id.CB_password);
+        auto_login = (CheckBox) findViewById(R.id.CB_auto);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         ClearableCookieJar cookieJar =
@@ -95,9 +106,23 @@ public class LoginActivity extends Activity {
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        //判断记住密码多选框的状态
+        if (sp.getBoolean("ISCHECK", false)) {
+            //设置记住密码复选框默认是记录密码状态
+            rem_pw.setChecked(true);
+            mEmailView.setText(sp.getString("account", ""));//填入账号
+            mPasswordView.setText(sp.getString("password", ""));//填入密码
+            //判断自动登陆多选框状态
+            if (sp.getBoolean("AUTO_ISCHECK", false)) {
+                //设置自动登录复选框默认是自动登录状态
+                auto_login.setChecked(true);
+                //跳转界面  跳转至下一个活动
+                attemptLogin();//！！！！！不确定！！！！！
+            }
+        }
         mPasswordView
                 .setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
@@ -110,7 +135,34 @@ public class LoginActivity extends Activity {
                         return false;
                     }
                 });
+        //监听记住密码多选框事件
+        rem_pw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (rem_pw.isChecked()) {
 
+                    // System.out.println("记住密码已选中");
+                    sp.edit().putBoolean("ISCHECK", true).apply();
+
+                } else {
+
+                    // System.out.println("记住密码没有选中");
+                    sp.edit().putBoolean("ISCHECK", false).apply();
+                }
+            }
+        });
+        //监听自动登录多选框事件
+        auto_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (auto_login.isChecked()) {
+                    // System.out.println("自动登录已选中");
+                    sp.edit().putBoolean("AUTO_ISCHECK", true).apply();
+
+                } else {
+                    //    System.out.println("自动登录没有选中");
+                    sp.edit().putBoolean("AUTO_ISCHECK", false).apply();
+                }
+            }
+        });
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -118,6 +170,7 @@ public class LoginActivity extends Activity {
                 attemptLogin();
             }
         });
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -229,7 +282,6 @@ public class LoginActivity extends Activity {
 
         mEmailView.setAdapter(adapter);
     }
-
 
     // init cookie manager
 
