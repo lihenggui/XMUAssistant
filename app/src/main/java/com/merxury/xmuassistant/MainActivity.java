@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     String elecString;
     private SwipeRefreshLayout swipeLayout;
 
-    private TextView urlTextView;
+
     private TextView titleTextView;
     private TextView contentTextView;
     private CardView newsCardView;
@@ -69,12 +69,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             switch (msg.what) {
                 case UPDATE_TEXT: {
                     //显示第一条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url);
                     titleTextView = (TextView) findViewById(R.id.news_title);
                     contentTextView = (TextView) findViewById(R.id.news_content);
                     newsCardView = (CardView) findViewById(R.id.newsCard);
                     NewsQuery.News temp = news.get(0);
-                    urlTextView.setText(temp.getUrl());
                     titleTextView.setText(temp.getTitle());
                     if (temp.getContent().length() > 200) {
                         contentTextView.setText(temp.getContent().substring(0, 200));
@@ -91,12 +89,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     });
                     //显示第二条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url2);
                     titleTextView = (TextView) findViewById(R.id.news_title2);
                     contentTextView = (TextView) findViewById(R.id.news_content2);
                     newsCardView2 = (CardView) findViewById(R.id.newsCard2);
                     temp = news.get(1);
-                    urlTextView.setText(temp.getUrl());
                     titleTextView.setText(temp.getTitle());
                     if (temp.getContent().length() > 200) {
                         contentTextView.setText(temp.getContent().substring(0, 200));
@@ -113,12 +109,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     });
                     //显示第三条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url3);
                     titleTextView = (TextView) findViewById(R.id.news_title3);
                     contentTextView = (TextView) findViewById(R.id.news_content3);
                     newsCardView3 = (CardView) findViewById(R.id.newsCard3);
                     temp = news.get(2);
-                    urlTextView.setText(temp.getUrl());
                     titleTextView.setText(temp.getTitle());
                     if (temp.getContent().length() > 200) {
                         contentTextView.setText(temp.getContent().substring(0, 200));
@@ -135,12 +129,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     });
                     //显示第四条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url4);
                     titleTextView = (TextView) findViewById(R.id.news_title4);
                     contentTextView = (TextView) findViewById(R.id.news_content4);
                     newsCardView4 = (CardView) findViewById(R.id.newsCard4);
                     temp = news.get(3);
-                    urlTextView.setText(temp.getUrl());
                     titleTextView.setText(temp.getTitle());
                     if (temp.getContent().length() > 200) {
                         contentTextView.setText(temp.getContent().substring(0, 200));
@@ -157,12 +149,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     });
                     //显示第五条新闻
-                    urlTextView = (TextView) findViewById(R.id.news_url5);
                     titleTextView = (TextView) findViewById(R.id.news_title5);
                     contentTextView = (TextView) findViewById(R.id.news_content5);
                     newsCardView5 = (CardView) findViewById(R.id.newsCard5);
                     temp = news.get(4);
-                    urlTextView.setText(temp.getUrl());
                     titleTextView.setText(temp.getTitle());
                     if (temp.getContent().length() > 200) {
                         contentTextView.setText(temp.getContent().substring(0, 200));

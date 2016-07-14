@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <ScrollView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -43,6 +44,7 @@
                 android:background="#FAFAFA"
                 android:gravity="center"
                 android:text="Course" />
+
 
 
             <!--课程表卡片1-->
@@ -354,20 +356,14 @@
                         android:id="@+id/news_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="24sp"
                         android:textColor="#0000cd" />
 
-                    <TextView
-                        android:id="@+id/news_url"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="#33691e"
-                        android:textSize="12sp" />
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -378,7 +374,8 @@
                         android:id="@+id/news_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp" />
+                        android:textSize="14sp"
+                        android:padding="16dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -401,20 +398,15 @@
                         android:id="@+id/news_title2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="24sp"
                         android:textColor="#0000cd" />
 
-                    <TextView
-                        android:id="@+id/news_url2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="#33691e"
-                        android:textSize="12sp" />
+
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -425,7 +417,8 @@
                         android:id="@+id/news_content2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp" />
+                        android:textSize="14sp"
+                        android:padding="16dp" />/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -448,20 +441,15 @@
                         android:id="@+id/news_title3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="24sp"
                         android:textColor="#0000cd" />
 
-                    <TextView
-                        android:id="@+id/news_url3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="#33691e"
-                        android:textSize="12sp" />
+
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -472,7 +460,8 @@
                         android:id="@+id/news_content3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp" />
+                        android:textSize="14sp"
+                        android:padding="16dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -495,20 +484,14 @@
                         android:id="@+id/news_title4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="24sp"
                         android:textColor="#0000cd" />
 
-                    <TextView
-                        android:id="@+id/news_url4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="#33691e"
-                        android:textSize="12sp" />
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -519,7 +502,8 @@
                         android:id="@+id/news_content4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp" />
+                        android:textSize="14sp"
+                        android:padding="16dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -542,20 +526,15 @@
                         android:id="@+id/news_title5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="24sp"
                         android:textColor="#0000cd" />
 
-                    <TextView
-                        android:id="@+id/news_url5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="#33691e"
-                        android:textSize="12sp" />
+
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -566,7 +545,8 @@
                         android:id="@+id/news_content5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp" />
+                        android:textSize="14sp"
+                        android:padding="16dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
