@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XMU.iml" filepath="$PROJECT_DIR$/XMU.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XMUAssistant.iml" filepath="$PROJECT_DIR$/XMUAssistant.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
