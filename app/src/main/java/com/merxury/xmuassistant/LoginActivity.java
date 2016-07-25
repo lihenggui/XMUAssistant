@@ -19,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,7 +37,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.FormBody;
@@ -90,11 +88,10 @@ public class LoginActivity extends Activity {
         /*
         持久化保存cookies~一次登陆即有效~
          */
-        sp = this.getSharedPreferences("data", MODE_PRIVATE);
-        rem_pw = (CheckBox) findViewById(R.id.CB_password);
-        auto_login = (CheckBox) findViewById(R.id.CB_auto);
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        sp = this.getSharedPreferences("data", MODE_PRIVATE);//获得可以读取的配置文件
+        rem_pw = (CheckBox) findViewById(R.id.CB_password);//记住密码复选框
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);//用户名框
+        mPasswordView = (EditText) findViewById(R.id.password);//密码框
         mPasswordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         ClearableCookieJar cookieJar =
                 new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
@@ -115,13 +112,14 @@ public class LoginActivity extends Activity {
             rem_pw.setChecked(true);
             mEmailView.setText(sp.getString("account", ""));//填入账号
             mPasswordView.setText(sp.getString("password", ""));//填入密码
-            //判断自动登陆多选框状态
-            if (sp.getBoolean("AUTO_ISCHECK", false)) {
+            //判断自动登陆多选框状态/
+            //由于默认设置为自动登陆，就把它给注释掉了
+/*            if (sp.getBoolean("AUTO_ISCHECK", false)) {
                 //设置自动登录复选框默认是自动登录状态
                 auto_login.setChecked(true);
                 //跳转界面  跳转至下一个活动
                 attemptLogin();//！！！！！不确定！！！！！
-            }
+            }*/
         }
         mPasswordView
                 .setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -150,7 +148,7 @@ public class LoginActivity extends Activity {
                 }
             }
         });
-        //监听自动登录多选框事件
+/*        //监听自动登录多选框事件
         auto_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (auto_login.isChecked()) {
@@ -162,7 +160,7 @@ public class LoginActivity extends Activity {
                     sp.edit().putBoolean("AUTO_ISCHECK", false).apply();
                 }
             }
-        });
+        });*/
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -272,16 +270,6 @@ public class LoginActivity extends Activity {
     }
 
 
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        // Create adapter to tell the AutoCompleteTextView what to show in its
-        // dropdown list.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                LoginActivity.this,
-                android.R.layout.simple_dropdown_item_1line,
-                emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
 
     // init cookie manager
 

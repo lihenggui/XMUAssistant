@@ -1,6 +1,12 @@
 package com.merxury.xmuassistant;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,19 +27,26 @@ import okhttp3.Response;
  * 查询学生余额信息的类定义
  */
 public class CardQuery {
-    public static OkHttpClient client = MainActivity.client;
+    public static OkHttpClient client;
     private String money;
     private String studentName;
     private String username;
     private String password;
     private SharedPreferences pref;
+    private Context mContext;
 
-    CardQuery(String username, String password) {
+    CardQuery(String username, String password, Context mContext) {
         this.username = username;
         this.password = password;
+        this.mContext = mContext;
     }
 
-    public String getMoney(String username, String password) {
+    public double getMoney() {
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
+        client = new OkHttpClient.Builder()
+                .cookieJar(cookieJar)
+                .build();
         try {
             String ixmures = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", username, password);
             Document ixmudoc = Jsoup.parse(ixmures);
@@ -52,7 +65,7 @@ public class CardQuery {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return money;
+        return Double.valueOf(money.substring(0, money.length() - 1));
     }
 
     private String sendPost(String url, String username, String password) throws IOException {

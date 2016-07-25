@@ -129,6 +129,11 @@ public class NewsQuery extends SQLiteOpenHelper {
             newsList.add(news);
         }
         cursor.close();
+        //判定newsList是否为空，如果为空，返回null
+        if (newsList.isEmpty()) {
+            return null;
+        }
+        //不为空，返回List集合
         return newsList;
 
     }

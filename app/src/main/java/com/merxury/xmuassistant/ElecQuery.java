@@ -38,16 +38,15 @@ public class ElecQuery {
 
 
     //getters and setters 写入&读取各种信息
-    public String getMoney() {
+    public double getMoney() {
         if (moneyLeft.isEmpty()) {
             try {
                 moneyLeft = getElec();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return moneyLeft;
         }
-        return moneyLeft;
+        return Double.valueOf(moneyLeft);
     }
 
     public String getUrl() {

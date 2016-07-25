@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 /**
- *   Created by deng on 2016/5/15.
+ * Created by deng on 2016/5/15.
  */
 public class QuickRoadActivity extends MainActivity {
-   private LinearLayout xuegong;
+    private LinearLayout xuegong;
     private LinearLayout jiaowu;
     private LinearLayout yanjiusheng;
     private LinearLayout lecture;
@@ -22,10 +22,10 @@ public class QuickRoadActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quickroad);
 
-         xuegong = (LinearLayout) findViewById(R.id.a);
+        xuegong = (LinearLayout) findViewById(R.id.a);
         xuegong.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://xg.xmu.edu.cn"));
                 startActivity(intent);
             }
@@ -33,7 +33,7 @@ public class QuickRoadActivity extends MainActivity {
         jiaowu = (LinearLayout) findViewById(R.id.b);
         jiaowu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://ssfw.xmu.edu.cn"));
                 startActivity(intent);
             }
@@ -41,7 +41,7 @@ public class QuickRoadActivity extends MainActivity {
         yanjiusheng = (LinearLayout) findViewById(R.id.c);
         yanjiusheng.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://yjsy.xmu.edu.cn"));
                 startActivity(intent);
             }
@@ -49,7 +49,7 @@ public class QuickRoadActivity extends MainActivity {
         lecture = (LinearLayout) findViewById(R.id.d);
         lecture.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://lecture.xmu.edu.cn"));
                 startActivity(intent);
             }
@@ -57,7 +57,7 @@ public class QuickRoadActivity extends MainActivity {
         library = (LinearLayout) findViewById(R.id.e);
         library.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://library.xmu.edu.cn"));
                 startActivity(intent);
             }
@@ -65,7 +65,7 @@ public class QuickRoadActivity extends MainActivity {
         affair = (LinearLayout) findViewById(R.id.f);
         affair.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_VIEW);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://infoplus.xmu.edu.cn"));
                 startActivity(intent);
             }
@@ -73,8 +73,6 @@ public class QuickRoadActivity extends MainActivity {
 
 
     }
-
-
 
 
 }

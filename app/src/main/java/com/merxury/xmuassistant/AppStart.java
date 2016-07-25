@@ -19,7 +19,6 @@ import java.util.TimerTask;
 
 public class AppStart extends Activity {
     String username;
-    String room;
     private SharedPreferences preferences;
 
     @Override
@@ -28,29 +27,18 @@ public class AppStart extends Activity {
         super.onCreate(savedInstanceState);
         final View view = View.inflate(this, R.layout.start, null);
         setContentView(view);
-        preferences = getSharedPreferences("data", MODE_PRIVATE);
+        preferences = this.getSharedPreferences("data", MODE_PRIVATE);
         IsUsernameOrRoomAvailable();
     }
 
     public void IsUsernameOrRoomAvailable() {
-        username = preferences.getString("email", "");
+        username = preferences.getString("account", "");
         //检测用户名是否为空，如果为空的话，跳转到登录页面
         if (username.isEmpty()) {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     startActivity(new Intent(AppStart.this, LoginActivity.class));
-                    finish();
-                }
-            }, 4000); //此为停留时间,1000=1s
-            return;
-        }
-        //检测房间配置文件是否为空，如果为空则跳转到配置宿舍的页面
-        if (room.isEmpty()) {
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(AppStart.this, SettingsActivity.class));
                     finish();
                 }
             }, 4000); //此为停留时间,1000=1s
