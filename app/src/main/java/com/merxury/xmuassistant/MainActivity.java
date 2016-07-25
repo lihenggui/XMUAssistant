@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         titleTextView = (TextView) findViewById(R.id.news_title);
         contentTextView = (TextView) findViewById(R.id.news_content);
         newsCardView = (CardView) findViewById(R.id.newsCard);
+        //初始化新闻内容，从数据库中读取
         NewsQuery.News temp = news.get(0);
         titleTextView.setText(temp.getTitle());
         if (temp.getContent().length() > 140) {

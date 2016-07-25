@@ -1,73 +1,69 @@
 package com.merxury.xmuassistant;
 
 /**
- * Created by lihen on 2016/5/11.
+ * Created by dhd on 2016/5/11.
+ * Modified by lihenggui on 2016/7/25
+ * 解决了第一屏的跳帧问题
+ * 加入了登录状态的判断
  */
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 
-public class AppStart extends AppCompatActivity {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class AppStart extends Activity {
+    String username;
+    String room;
     private SharedPreferences preferences;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-            window.setNavigationBarColor(Color.TRANSPARENT);
-        }
         final View view = View.inflate(this, R.layout.start, null);
         setContentView(view);
-        preferences = getSharedPreferences("count", MODE_WORLD_READABLE);
-        int count = preferences.getInt("count", 0);
-
-
-
-        //渐变展示启动屏
-        AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-        aa.setDuration(200);
-        view.startAnimation(aa);
-        aa.setAnimationListener(new Animation.AnimationListener() {
-
-            public void onAnimationEnd(Animation arg0) {
-                redirectTo();
-            }
-
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            public void onAnimationStart(Animation animation) {
-            }
-
-        });
-
-
+        preferences = getSharedPreferences("data", MODE_PRIVATE);
+        IsUsernameOrRoomAvailable();
     }
 
-    /**
-     * 跳转到...
-     */
-    private void redirectTo() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+    public void IsUsernameOrRoomAvailable() {
+        username = preferences.getString("email", "");
+        //检测用户名是否为空，如果为空的话，跳转到登录页面
+        if (username.isEmpty()) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(AppStart.this, LoginActivity.class));
+                    finish();
+                }
+            }, 4000); //此为停留时间,1000=1s
+            return;
+        }
+        //检测房间配置文件是否为空，如果为空则跳转到配置宿舍的页面
+        if (room.isEmpty()) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(AppStart.this, SettingsActivity.class));
+                    finish();
+                }
+            }, 4000); //此为停留时间,1000=1s
+            return;
+        }
+        //如果之前已经保存好了配置文件，直接跳转到MainActivity
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(new Intent(AppStart.this, MainActivity.class));
+                finish();
+            }
+        }, 4000); //此为停留时间,1000=1s
     }
+
 }
