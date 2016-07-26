@@ -96,17 +96,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         money = pref.getString("CardMoney", "");
 //        displayNews(new NewsQuery(this, "news", null, 1));
 //        DisplayMoneyAndName();
-
 //        });
-        searchView = (SearchView) findViewById(R.id.searchBox);
-        //设置一个提交按钮
-        searchView.setSubmitButtonEnabled(true);
+
         //显示新闻
         showNewsFromDatabase();
+
         //启动服务
         Intent startServerIntent = new Intent(this, BackgroundService.class);
         startService(startServerIntent);
 
+        //设置一个提交按钮
+        searchView = (SearchView) findViewById(R.id.searchBox);
+        searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             private String TAG = getClass().getSimpleName();
             @Override
@@ -227,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        // Handle navigation view item clicks here.
+        // Navigation Drawer的点击事件处理
         int id = item.getItemId();
 
         if (id == R.id.nav_library) {
@@ -268,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //初始化新闻内容，从数据库中读取
         NewsQuery.News temp = news.get(0);
         if (temp.getTitle().equals("null")) {
-            titleTextView.setText("请下拉刷新以获取新闻！");
+            titleTextView.setText("教务处给我们的数据不对啊，请下拉刷新以获取新闻！");
             contentTextView.setText("请下拉刷新以获取新闻！");
             return;
         }
@@ -301,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             contentTextView.setText(temp.getContent());
         }
         final String url1 = temp.getUrl();
-        newsCardView.setOnClickListener(new View.OnClickListener() {
+        newsCardView2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url1));
@@ -322,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             contentTextView.setText(temp.getContent());
         }
         final String url2 = temp.getUrl();
-        newsCardView.setOnClickListener(new View.OnClickListener() {
+        newsCardView3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url2));
@@ -343,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             contentTextView.setText(temp.getContent());
         }
         final String url3 = temp.getUrl();
-        newsCardView.setOnClickListener(new View.OnClickListener() {
+        newsCardView4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url3));
@@ -364,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             contentTextView.setText(temp.getContent());
         }
         final String url4 = temp.getUrl();
-        newsCardView.setOnClickListener(new View.OnClickListener() {
+        newsCardView5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url4));
