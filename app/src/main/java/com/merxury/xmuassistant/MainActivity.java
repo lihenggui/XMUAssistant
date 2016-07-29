@@ -3,6 +3,8 @@ package com.merxury.xmuassistant;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,10 +32,6 @@ import okhttp3.OkHttpClient;
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
         ,NavigationView.OnNavigationItemSelectedListener  {
 
-    /**
-     * 滚动显示和隐藏menu时，手指滑动需要达到的速度。
-     */
-
     public static final int UPDATE_TEXT = 1;
     public static OkHttpClient client;
     public static String studentName;
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private LinearLayout settings;
     private LinearLayout exit;
     private SearchView searchView;
-    private SharedPreferences.Editor editor;
     private SharedPreferences pref;
     /**
      * 将获取到的电费信息及新闻显示在CardView里，修改界面只能在主线程中进行，
@@ -70,10 +67,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 case UPDATE_TEXT: {
                     //显示新闻
                     showNewsFromDatabase();
-                    //显示获取到的电费
+                    //显示学生卡余额
+                    DisplayMoneyAndName();
+/*                    //显示获取到的电费
                     elecTextView = (TextView) findViewById(R.id.elecQuery);
                     elecTextView.setText("当前电费余额:" + elecString);
-                    swipeLayout.setRefreshing(false);
+                    swipeLayout.setRefreshing(false);*/
                 }
                 break;
                 default:
@@ -82,6 +81,28 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
     };
+
+    /**
+     * 检测当的网络（WLAN、3G/2G）状态
+     *
+     * @param context Context
+     * @return true 表示网络可用
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected()) {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         studentName = pref.getString("studentName", "");
         money = pref.getString("CardMoney", "");
 //        displayNews(new NewsQuery(this, "news", null, 1));
-//        DisplayMoneyAndName();
+        DisplayMoneyAndName();
 //        });
 
         //显示新闻
@@ -153,24 +174,28 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
      * 因涉及到网络操作，所以在子线程中获取电费以及新闻
+     * 参数列表
+     * @param newsQuery 新闻查询类
+     * @param cardQuery 查询卡余额的方法
+     * 执行完毕之后，会发送一个消息给Handler接收
+     * 更新主界面
      */
     public void displayNews(final NewsQuery newsQuery, final CardQuery cardQuery) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    //获取楼号，然后请求电费信息
                     SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
                     String xiaoqu = pref.getString("xiaoqu", ""); //获取小区ID
                     String lou = pref.getString("lou", ""); //获取楼号
                     String roomID = pref.getString("roomID", "");//获取房间号
-                    ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID);
+                    ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID, getApplicationContext());
+                    //下面的两个方法都会更新配置文件储存的金额和学生姓名
                     elecString = elec.getElec();
                     Double money = cardQuery.getMoney();
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -186,8 +211,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void DisplayMoneyAndName() {
         try {
             TextView elecTextView = (TextView) findViewById(R.id.studentName);
-            elecTextView.setText(studentName);
+            studentName = pref.getString("studentName", "");
+            if (studentName.trim().isEmpty()) {
+                elecTextView.setText("获取信息不正确，请重新下拉以刷新");
+            } else {
+                elecTextView.setText(studentName);
+            }
             TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
+            money = pref.getString("CardMoney", "0.00");
             xykTextview.setText("当前校园卡余额:" + money);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -201,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void run() {
                 try {
                     displayNews(new NewsQuery(getApplicationContext(), "news", null, 1), new CardQuery(pref.getString("account", ""), pref.getString("password", ""), getApplicationContext()));
-                    DisplayMoneyAndName();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -219,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             super.onBackPressed();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

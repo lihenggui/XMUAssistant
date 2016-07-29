@@ -1,5 +1,8 @@
 package com.merxury.xmuassistant;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -28,12 +31,22 @@ public class ElecQuery {
     private String lou;//楼号
     private String roomID;//房间号
     private String moneyLeft; //余额信息
+    private Context context; //传入Context
+    private SharedPreferences preferences;
 
-
-    public ElecQuery(String xiaoqu, String lou, String roomID) {
+    /**
+     * 电费查询方法的构造甘薯
+     *
+     * @param xiaoqu  校区名称
+     * @param lou     楼号
+     * @param roomID  房间号
+     * @param context 传入context，用于保存配置
+     */
+    public ElecQuery(String xiaoqu, String lou, String roomID, Context context) {
         this.xiaoqu = xiaoqu;
         this.lou = lou;
         this.roomID = roomID;
+        this.context = context;
     }
 
 
@@ -92,6 +105,12 @@ public class ElecQuery {
     //请求整个电费页面
     //网页开启了两步验证，首先要将楼号，viewstate,eventvalidation参数传给服务器，服务器返回页面后新生成的viewstate/eventvalidation才能采集+提交
     //不然会报http 500错误
+
+    /**
+     * 得到电费的方法
+     * @return 电费的金额，String类型
+     * @throws IOException
+     */
     public String getElec() throws IOException {
         //电费查询有隐藏参数，放在页面源代码中，所以要申请读取一次页面抓取这些隐藏的信息
         //第一步抓取页面，首先先向服务器发送数据，获取网页内容
@@ -169,14 +188,22 @@ public class ElecQuery {
                 //得到网页余额然后返回
                 Elements elecElem = elecDoc.select("#dxgvElec_DXDataRow0 > td:nth-child(7)");
                 moneyLeft = elecElem.text();
-                return elecElem.text();
+                SaveElecMoney(moneyLeft);
+                return moneyLeft;
             } else {
                 throw new IOException("Unexpected code:" + response);
             }
         } else {
             throw new IOException("Unexpected code:" + firstResponse);
         }
-
-
     }
+
+    //保存电费到配置文件中的方法
+    private void SaveElecMoney(String money) {
+        preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("ElecMoney", money);
+        editor.apply();
+    }
+
 }

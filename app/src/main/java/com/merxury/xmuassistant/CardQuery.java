@@ -56,12 +56,13 @@ public class CardQuery {
             //余额信息在最后一个元素里，使用.last输出
             Elements moneyLeft = elementsDiv.select("font");
             //保存到money变量中
-            money = moneyLeft.last().text();
+            money = moneyLeft.last().text().substring(0, moneyLeft.last().text().length() - 1);
             //选择姓名所在的区域
             Elements nameElems = ixmudoc.select("#pf1037 > div > div.portletContent > table > tbody > tr > td:nth-child(2) > div > ul > li:nth-child(1)");
             String tempName = nameElems.text();
             //删除末尾，留下有用的信息
             studentName = tempName.substring(0, tempName.length() - 5);
+            SaveNameAndMoney(studentName, Double.valueOf(money));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,6 +100,17 @@ public class CardQuery {
             throw new IOException("Unexpected code:" + response);
         }
     }
+
+    //将获取到的学生名字和金额保存到配置文件中
+    private void SaveNameAndMoney(String name, double money) {
+        pref = mContext.getSharedPreferences("data", Context.MODE_PRIVATE);
+        // 创建SharedPreferences.Editor对象，用于存储数据修改
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("studentName", name);
+        editor.putString("CardMoney", String.valueOf(money));
+        editor.apply();
+    }
+
 
 }
 
