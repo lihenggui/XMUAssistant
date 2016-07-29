@@ -39,7 +39,7 @@
                 android:layout_marginRight="48dp"
                 android:layout_marginTop="180dp"
                 android:background="@drawable/bg_edittext"
-                android:hint="Student ID"
+                android:hint="@string/prompt_email"
                 android:padding="4dp"
                 android:singleLine="true"
                 android:textColorHint="#AAAAAA"
@@ -53,7 +53,7 @@
                 android:layout_marginRight="48dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_edittext"
-                android:hint="Password"
+                android:hint="@string/prompt_password"
                 android:imeActionId="@+id/login"
                 android:inputType="textPassword"
                 android:padding="4dip"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="48dp"
                 android:layout_marginRight="48dp"
-                android:text="记住密码" />
+                android:text="@string/remember_password" />
 
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -77,7 +77,7 @@
                 android:layout_marginRight="48dp"
                 android:layout_marginTop="48dp"
                 android:background="#5c6bc0"
-                android:text="Sign In"
+                android:text="@string/action_sign_in_short"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF" />
         </LinearLayout>

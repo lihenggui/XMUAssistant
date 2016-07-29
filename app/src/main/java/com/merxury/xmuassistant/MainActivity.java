@@ -119,9 +119,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         pref = getSharedPreferences("data", MODE_PRIVATE);
         studentName = pref.getString("studentName", "");
         money = pref.getString("CardMoney", "");
-        DisplayMoneyAndName();
-//        });
-
         //显示新闻
         showNewsFromDatabase();
 
@@ -159,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 return false;
             }
         });
-
+        DisplayMoneyAndName();
     }
 
     @Override

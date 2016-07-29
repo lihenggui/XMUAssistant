@@ -70,10 +70,8 @@ public class LoginActivity extends Activity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private CheckBox rem_pw;         //记住密码复选框
-    private CheckBox auto_login;   //自动登录复选框
     private View mProgressView;
     private View mLoginFormView;
-    private LocalBroadcastManager localBroadcastManager;
 
 
     @Override
@@ -100,7 +98,6 @@ public class LoginActivity extends Activity {
                 .build();
         client = client1;
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        localBroadcastManager = LocalBroadcastManager.getInstance(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -291,8 +288,6 @@ public class LoginActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             try {
                 //发送网络请求
                 String ixmures = sendPost("http://ids.xmu.edu.cn/authserver/login?service=http%3A%2F%2Fi.xmu.edu.cn%2F", mEmail, mPassword);
@@ -325,9 +320,11 @@ public class LoginActivity extends Activity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("扫描失败");
+                return false;
             }
             // TODO: register the new account here.
             return true;
@@ -357,6 +354,12 @@ public class LoginActivity extends Activity {
 
 
         public String sendPost(String url, String username, String password) throws IOException {
+            //首先要进行登出操作，防止重复登录
+            Request logout = new Request.Builder()
+                    .url("http://ids.xmu.edu.cn/authserver/logout?service=http%3A%2F%2Fi.xmu.edu.cn%2Findex.portal")
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2700.0 Safari/537.36")
+                    .build();
+            client.newCall(logout).execute();
             //第一次请求页面，获取验证参数
             Request requestFirst = new Request.Builder()
                     .url(url)
