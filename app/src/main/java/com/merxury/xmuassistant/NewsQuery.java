@@ -143,8 +143,8 @@ public class NewsQuery extends SQLiteOpenHelper {
         db = getWritableDatabase();
         db.execSQL("insert into news(id,title,url,content) values("
                 + order + ", '"
-                + newsInfo.get("title" + order) + "', '"
-                + newsInfo.get("url" + order) + "',' "
+                + newsInfo.get("Title" + order) + "', '"
+                + newsInfo.get("Url" + order) + "',' "
                 + newsInfo.get("content" + order) + "');");
     }
 
@@ -160,13 +160,11 @@ public class NewsQuery extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // TODO 创建数据库后，对数据库的操作
         db.execSQL(CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO 更改数据库版本的操作
     }
 
     @Override

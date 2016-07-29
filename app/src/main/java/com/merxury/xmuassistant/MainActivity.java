@@ -287,24 +287,35 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         int id = item.getItemId();
 
         if (id == R.id.nav_library) {
-
+            //未完成
+            Toast.makeText(getApplicationContext(), "我们正在努力完善功能中，尽请期待",
+                    Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_score) {
-
+            //未完成
+            Toast.makeText(getApplicationContext(), "我们正在努力完善功能中，尽请期待",
+                    Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_course) {
-
+            //未完成
+            Toast.makeText(getApplicationContext(), "我们正在努力完善功能中，尽请期待",
+                    Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_channel) {
-               Intent intent = new Intent();
-               intent.setClass(MainActivity.this, QuickRoadActivity.class);
-               startActivity(intent);
-
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, QuickRoadActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_settings) {
-
+            Intent intent =  new Intent();
+            intent.setClass(MainActivity.this,SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_exit) {
-
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if(drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
