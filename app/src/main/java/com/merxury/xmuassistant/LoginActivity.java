@@ -287,11 +287,6 @@ public class LoginActivity extends Activity {
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
-            //保存用户名密码到配置文件中
-            editor = getSharedPreferences("data", MODE_PRIVATE).edit();
-            editor.putString("account", email);
-            editor.putString("password", password);
-            editor.apply();
         }
 
         @Override
@@ -300,12 +295,12 @@ public class LoginActivity extends Activity {
 
             try {
                 //发送网络请求
-                String ixmures = sendPost("http://idstar.xmu.edu.cn/amserver/UI/Login", mEmail, mPassword);
+                String ixmures = sendPost("http://ids.xmu.edu.cn/authserver/login?service=http%3A%2F%2Fi.xmu.edu.cn%2F", mEmail, mPassword);
                 //使用jsoup解析页面，将html转换成Document实例
                 //获取到网页全部代码
                 Document ixmudoc = Jsoup.parse(ixmures);
                 //获得一系列的子标签,这里的pf1041特指学生卡信息的部分
-                if (ixmures.contains("Authentication failed")) {
+                if (ixmures.contains("有误")) {
                     return false;
                     //如果用户名密码错误，返回的信息即有登陆失败的字样，返回失败
                 }
@@ -320,9 +315,12 @@ public class LoginActivity extends Activity {
                 Elements nameElems = ixmudoc.select("#pf1037 > div > div.portletContent > table > tbody > tr > td:nth-child(2) > div > ul > li:nth-child(1)");
                 String tempName = nameElems.text();
                 studentName = tempName.substring(0, tempName.length() - 5);
+                //将得到的数据写入配置文件中
                 editor = getSharedPreferences("data", MODE_PRIVATE).edit();
-                editor.putString("CardMoney", money);            //小区ID写入data文件
-                editor.putString("studentName", studentName);          //楼号写入data文件
+                editor.putString("CardMoney", money);            //学生卡余额写入文件
+                editor.putString("studentName", studentName);    //学生姓名写入配置文件中
+                editor.putString("account", mEmail);            //用户名写入配置文件
+                editor.putString("password", mPassword);        //密码写入配置文件
                 editor.apply();
 
             } catch (IOException e) {
@@ -359,16 +357,28 @@ public class LoginActivity extends Activity {
 
 
         public String sendPost(String url, String username, String password) throws IOException {
-
+            //第一次请求页面，获取验证参数
+            Request requestFirst = new Request.Builder()
+                    .url(url)
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2700.0 Safari/537.36")
+                    .build();
+            Response responseFirst = client.newCall(requestFirst).execute();
+            Document loginRequiredParams = Jsoup.parse(responseFirst.body().string());
+            String lt = loginRequiredParams.select("#casLoginForm > input[type=\"hidden\"]:nth-child(7)").attr("value");
+            String dllt = loginRequiredParams.select("#casLoginForm > input[type=\"hidden\"]:nth-child(8)").attr("value");
+            String execution = loginRequiredParams.select("#casLoginForm > input[type=\"hidden\"]:nth-child(9)").attr("value");
+            String eventID = loginRequiredParams.select("#casLoginForm > input[type=\"hidden\"]:nth-child(10)").attr("value");
+            String rmShown = loginRequiredParams.select("#casLoginForm > input[type=\"hidden\"]:nth-child(11)").attr("value");
             //将登录的参数添加到HashMap中
             HashMap<String, String> params = new HashMap<>();
-            params.put("IDToken0", "");
-            params.put("IDToken1", username);
-            params.put("IDToken2", password);
-            params.put("IDButton", "登录");
-            params.put("goto", "http://i.xmu.edu.cn");
-            params.put("inputCode", "");
-            params.put("gx_charset", "UTF-8");
+            params.put("username", username);
+            params.put("password", password);
+            params.put("rememberMe", "on");
+            params.put("lt", lt);
+            params.put("dllt", dllt);
+            params.put("execution", execution);
+            params.put("_eventId", eventID);
+            params.put("rmShown", rmShown);
             //初始化Builder
             FormBody.Builder builder = new FormBody.Builder();
             //将参数添加至Builder中

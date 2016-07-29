@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,10 +70,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     showNewsFromDatabase();
                     //显示学生卡余额
                     DisplayMoneyAndName();
-/*                    //显示获取到的电费
+                    //显示获取到的电费
                     elecTextView = (TextView) findViewById(R.id.elecQuery);
                     elecTextView.setText("当前电费余额:" + elecString);
-                    swipeLayout.setRefreshing(false);*/
+                    //弹出刷新完毕提示
+                    Toast.makeText(getApplicationContext(), "刷新完毕",
+                            Toast.LENGTH_SHORT).show();
+                    swipeLayout.setRefreshing(false);
                 }
                 break;
                 default:
@@ -115,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         pref = getSharedPreferences("data", MODE_PRIVATE);
         studentName = pref.getString("studentName", "");
         money = pref.getString("CardMoney", "");
-//        displayNews(new NewsQuery(this, "news", null, 1));
         DisplayMoneyAndName();
 //        });
 
@@ -178,11 +181,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * 因涉及到网络操作，所以在子线程中获取电费以及新闻
      * 参数列表
      * @param newsQuery 新闻查询类
-     * @param cardQuery 查询卡余额的方法
      * 执行完毕之后，会发送一个消息给Handler接收
      * 更新主界面
      */
-    public void displayNews(final NewsQuery newsQuery, final CardQuery cardQuery) {
+    public void GetNews(final NewsQuery newsQuery) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -195,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     ElecQuery elec = new ElecQuery(xiaoqu, lou, roomID, getApplicationContext());
                     //下面的两个方法都会更新配置文件储存的金额和学生姓名
                     elecString = elec.getElec();
-                    Double money = cardQuery.getMoney();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -204,6 +205,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Message message = new Message();
                 message.what = UPDATE_TEXT;
                 handler.sendMessage(message); // 将Message对象发送出去
+            }
+        }).start();
+    }
+
+    /**
+     * 查询学生卡余额的方法
+     * @param cardQuery 查询学生卡的对象
+     * 使用getMoney方法来获得余额信息
+     */
+    public void GetStudentCardMoney(final CardQuery cardQuery){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                 cardQuery.getMoney();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -225,17 +244,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
     }
-
+    //在下拉刷新的时候执行的操作
     public void onRefresh() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    displayNews(new NewsQuery(getApplicationContext(), "news", null, 1), new CardQuery(pref.getString("account", ""), pref.getString("password", ""), getApplicationContext()));
+                    GetNews(new NewsQuery(getApplicationContext(), "news", null, 1));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GetStudentCardMoney( new CardQuery(pref.getString("account", ""), pref.getString("password", ""), getApplicationContext()));
             }
         }).start();
     }
