@@ -1,5 +1,6 @@
 package com.merxury.xmuassistant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import android.widget.LinearLayout;
 /**
  * Created by deng on 2016/5/15.
  */
-public class QuickRoadActivity extends MainActivity {
+public class QuickRoadActivity extends Activity {
     private LinearLayout xuegong;
     private LinearLayout jiaowu;
     private LinearLayout yanjiusheng;
