@@ -2,6 +2,7 @@ package com.merxury.xmuassistant;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -47,7 +48,7 @@ public class NewsQuery extends SQLiteOpenHelper {
     }
 
     //使用一个HashMap来存储数据
-    private static boolean getTitle() {
+    private boolean getTitle() {
 
         try {
             //连接到选定的网站，获取整个网页数据
@@ -62,7 +63,9 @@ public class NewsQuery extends SQLiteOpenHelper {
                 newsInfo.put("URL" + i, newsURL);
                 newsInfo.put("Title" + i, newsTitle);
             }
-
+            if(CompareToFirstNews(newsInfo.get("Title1"))){
+                return false;
+            }
             for (int i = 1; i <= 5; i++) {
                 //获取新闻失败，返回失败值
                 if (!Information(i)) {
@@ -156,6 +159,22 @@ public class NewsQuery extends SQLiteOpenHelper {
                 + newsInfo.get("URL" + order) + "',content=' "
                 + newsInfo.get("content" + order) + "' where id="
                 + order + ";");
+    }
+
+    //传入一条string，读取数据库内的第一条消息，与之进行比较，如果一样的话，返回true,否则返回false
+    private boolean CompareToFirstNews(String title){
+        String databaseTitle;
+        try {
+            db = getReadableDatabase();
+            Cursor cursor = db.query("news", null, null, null, null, null, null);
+            cursor.moveToNext();
+            databaseTitle = cursor.getString(cursor.getColumnIndex("title"));
+            cursor.close();
+        }catch(CursorIndexOutOfBoundsException e){
+            e.printStackTrace();
+            return false;
+        }
+        return (databaseTitle.equals(title));
     }
 
     @Override
