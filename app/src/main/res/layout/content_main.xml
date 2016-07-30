@@ -26,7 +26,10 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_edittext"
-                android:imeOptions="actionSearch" />
+                android:imeOptions="actionSearch"
+                android:queryHint="@string/search_hint"
+                android:clickable="true"
+                android:contextClickable="true" />
 
             <TextView
                 android:layout_width="40dp"
@@ -43,7 +46,7 @@
                 android:layout_marginRight="8dp"
                 android:background="#FAFAFA"
                 android:gravity="center"
-                android:text="Course" />
+                android:text="@string/course" />
 
 
 
@@ -218,7 +221,7 @@
                 android:layout_marginRight="8dp"
                 android:background="#FAFAFA"
                 android:gravity="center"
-                android:text="Blance" />
+                android:text="@string/balance" />
             <!--校园卡、电费余额-->
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -266,7 +269,8 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="16dp"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text = "@string/cardmoney"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -318,7 +322,8 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="16dp"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text="@string/elecmoney"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -336,7 +341,7 @@
                 android:layout_marginRight="8dp"
                 android:background="#FAFAFA"
                 android:gravity="center"
-                android:text="News to read" />
+                android:text="news" />
             <!--新闻1标题、url、内容-->
             <android.support.v7.widget.CardView
                 android:id="@+id/newsCard"

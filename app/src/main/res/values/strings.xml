@@ -22,6 +22,12 @@
     <!-- Strings related to 输入宿舍号温馨提示 -->
     <string name="wenxitishi">温馨提示：选择好宿舍楼群，宿舍楼号后，需要再输入4位房间号。\n如住在海韵学生公寓海韵9-101的同学，需要选择海韵学生公寓，海韵9,
         并在房间号一栏中输入0101</string>
+
+    <string name="cardmoney">学生卡余额：</string>
+    <string name="elecmoney">宿舍电费余额：</string>
+    <string name="course">课程表</string>
+    <string name="balance">余额</string>
+    <string name="newstoread">新闻</string>
     <!-- Strings related to 宿舍区 -->
     <string-array name="xiaoqu">
         <item>本部芙蓉区</item>

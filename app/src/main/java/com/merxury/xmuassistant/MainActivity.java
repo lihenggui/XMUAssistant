@@ -3,6 +3,7 @@ package com.merxury.xmuassistant;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     DisplayMoneyAndName();
                     //显示获取到的电费
                     elecTextView = (TextView) findViewById(R.id.elecQuery);
-                    elecTextView.setText("当前电费余额:" + elecString);
+                    elecTextView.setText("当前电费余额：" + elecString + "元");
                     //弹出刷新完毕提示
                     Toast.makeText(getApplicationContext(), "刷新完毕",
                             Toast.LENGTH_SHORT).show();
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//显示界面
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);//SwipeLayout
+        swipeLayout.setColorSchemeColors(Color.BLUE,Color.RED);//设置旋转颜色
         swipeLayout.setOnRefreshListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -129,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //设置一个提交按钮
         searchView = (SearchView) findViewById(R.id.searchBox);
         searchView.setSubmitButtonEnabled(true);
+        searchView.setQueryHint("请键入您想要搜索的书籍名称");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             private String TAG = getClass().getSimpleName();
             @Override
@@ -157,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
         DisplayMoneyAndName();
+        //一进入界面就开始刷新
+        swipeLayout.setRefreshing(true);
+        onRefresh();
     }
 
     @Override
@@ -235,8 +241,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             TextView xykTextview = (TextView) findViewById(R.id.xykQuery);
             money = pref.getString("CardMoney", "0.00");
-            xykTextview.setText("当前校园卡余额:" + money);
-        } catch (NullPointerException e) {
+            xykTextview.setText("当前校园卡余额：" + money + "元");
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -440,52 +447,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
     }
-
-    //        跳转到图书查询界面
-
-//        library = (LinearLayout) findViewById(R.id.nav_library);
-//
-//        跳转到QueryResults
-//        score = (LinearLayout) findViewById(R.id.nav_score);
-//        score.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {/       /*
-//             此处留空，跳转到查询结果
-//             */
-//            }
-//        });
-    // 跳转到课程表界面
-//        course = (LinearLayout) findViewById(R.id.nav_course);
-//        course.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse("http://ssfw.xmu.edu.cn/cmstar/index.portal?.pn=p1201_p3530_p3531"));
-//                startActivity(intent);
-//            }
-//        });
-//        //跳转到QuickRoadActivity
-//        channel = (LinearLayout) findViewById(R.id.nav_channel);
-//        channel.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this, QuickRoadActivity.class);
-//                startActivity(intent);
-//            }
-//        });//跳转到SettingActivity
-//        settings = (LinearLayout) findViewById(R.id.nav_settings);
-//        settings.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                setContentView(R.layout.settings_activity);
-//            }
-//        });
-//        //退出结束应用程序
-//        exit = (LinearLayout) findViewById(R.id.nav_exit);
-//        exit.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//            }
-
 
 
 
