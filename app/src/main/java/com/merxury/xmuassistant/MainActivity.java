@@ -50,64 +50,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private CardView newsCardView3;
     private CardView newsCardView4;
     private CardView newsCardView5;
+    private CardView studentCardMoney;
+    private CardView elecMoney;
     private TextView elecTextView;
 
-
-    private LinearLayout score;
-    private LinearLayout course;
-    private LinearLayout channel;
-    private LinearLayout settings;
-    private LinearLayout exit;
     private SearchView searchView;
     private SharedPreferences pref;
-    /**
-     * 将获取到的电费信息及新闻显示在CardView里，修改界面只能在主线程中进行，
-     */
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_TEXT: {
-                    //显示新闻
-                    showNewsFromDatabase();
-                    //显示学生卡余额
-                    DisplayMoneyAndName();
-                    //显示获取到的电费
-                    elecTextView = (TextView) findViewById(R.id.elecQuery);
-                    elecTextView.setText("当前电费余额：" + elecString + "元");
-                    //弹出刷新完毕提示
-                    Toast.makeText(getApplicationContext(), "刷新完毕",
-                            Toast.LENGTH_SHORT).show();
-                    swipeLayout.setRefreshing(false);
-                }
-                break;
-                default:
-                    break;
-            }
-        }
-
-    };
-
-    /**
-     * 检测当的网络（WLAN、3G/2G）状态
-     *
-     * @param context Context
-     * @return true 表示网络可用
-     */
-    public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo info = connectivity.getActiveNetworkInfo();
-            if (info != null && info.isConnected()) {
-                // 当前网络是连接的
-                if (info.getState() == NetworkInfo.State.CONNECTED) {
-                    // 当前所连接的网络可用
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         money = pref.getString("CardMoney", "");
         //显示新闻
         showNewsFromDatabase();
+
+        //卡片可点击
+        MakeMoneyCardClickable();
 
         //启动服务
         Intent startServerIntent = new Intent(this, BackgroundService.class);
@@ -178,6 +129,55 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 将获取到的电费信息及新闻显示在CardView里，修改界面只能在主线程中进行，
+     */
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT: {
+                    //显示新闻
+                    showNewsFromDatabase();
+                    //显示学生卡余额
+                    DisplayMoneyAndName();
+                    //显示获取到的电费
+                    elecTextView = (TextView) findViewById(R.id.elecQuery);
+                    elecTextView.setText("当前电费余额：" + elecString + "元");
+                    //弹出刷新完毕提示
+                    Toast.makeText(getApplicationContext(), "刷新完毕",
+                            Toast.LENGTH_SHORT).show();
+                    swipeLayout.setRefreshing(false);
+                }
+                break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
+    /**
+     * 检测当的网络（WLAN、3G/2G）状态
+     *
+     * @param context Context
+     * @return true 表示网络可用
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected()) {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -324,6 +324,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+    public void MakeMoneyCardClickable(){
+        studentCardMoney = (CardView)findViewById(R.id.student_money_card);
+        studentCardMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://i.xmu.edu.cn"));
+                startActivity(intent);
+            }
+        });
+        elecMoney = (CardView)findViewById(R.id.elec_money_card);
+        elecMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://elec.xmu.edu.cn"));
+                startActivity(intent);
+            }
+        });
     }
 
     public void showNewsFromDatabase() {

@@ -23,7 +23,7 @@ public class QuickRoadActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quickroad);
 
-        xuegong = (LinearLayout) findViewById(R.id.a);
+        xuegong = (LinearLayout) findViewById(R.id.xuegong);
         xuegong.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -31,7 +31,7 @@ public class QuickRoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        jiaowu = (LinearLayout) findViewById(R.id.b);
+        jiaowu = (LinearLayout) findViewById(R.id.jiaowu);
         jiaowu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -39,7 +39,7 @@ public class QuickRoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        yanjiusheng = (LinearLayout) findViewById(R.id.c);
+        yanjiusheng = (LinearLayout) findViewById(R.id.yanjiusheng);
         yanjiusheng.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -47,7 +47,7 @@ public class QuickRoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        lecture = (LinearLayout) findViewById(R.id.d);
+        lecture = (LinearLayout) findViewById(R.id.lecture);
         lecture.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -55,7 +55,7 @@ public class QuickRoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        library = (LinearLayout) findViewById(R.id.e);
+        library = (LinearLayout) findViewById(R.id.library);
         library.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -63,7 +63,7 @@ public class QuickRoadActivity extends Activity {
                 startActivity(intent);
             }
         });
-        affair = (LinearLayout) findViewById(R.id.f);
+        affair = (LinearLayout) findViewById(R.id.transtraction);
         affair.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);

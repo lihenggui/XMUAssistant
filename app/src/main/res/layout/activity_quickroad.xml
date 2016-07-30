@@ -12,7 +12,7 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/a"
+            android:id="@+id/xuegong"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -37,11 +37,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/b"
+            android:id="@+id/lecture"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/a"
+            android:layout_below="@id/xuegong"
             android:layout_marginBottom="48dp"
             android:orientation="vertical"
             android:clickable="true">
@@ -63,11 +63,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/c"
+            android:id="@+id/library"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/b"
+            android:layout_below="@id/lecture"
             android:orientation="vertical"
             android:clickable="true">
 
@@ -97,7 +97,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/d"
+            android:id="@+id/transtraction"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -123,11 +123,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/e"
+            android:id="@+id/jiaowu"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/d"
+            android:layout_below="@id/transtraction"
             android:layout_marginBottom="48dp"
             android:orientation="vertical"
             android:clickable="true">
@@ -150,11 +150,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/f"
+            android:id="@+id/yanjiusheng"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/e"
+            android:layout_below="@id/jiaowu"
             android:orientation="vertical"
             android:clickable="true">
 

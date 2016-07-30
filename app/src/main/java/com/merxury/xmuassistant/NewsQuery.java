@@ -147,7 +147,7 @@ public class NewsQuery extends SQLiteOpenHelper {
         db.execSQL("insert into news(id,title,url,content) values("
                 + order + ", '"
                 + newsInfo.get("Title" + order) + "', '"
-                + newsInfo.get("Url" + order) + "',' "
+                + newsInfo.get("URL" + order) + "',' "
                 + newsInfo.get("content" + order) + "');");
     }
 
