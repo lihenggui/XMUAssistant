@@ -19,3 +19,5 @@ XMUAssistant - 厦大助手（暂定名）
 @dengwenyu
 特别感谢
 图标设计 @ImperatorS
+#4. 下载地址 
+https://github.com/lihenggui/XMUAssistant/blob/master/app-release.apk
